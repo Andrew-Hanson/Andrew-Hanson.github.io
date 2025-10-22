@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset='utf-8'><title>querySelector & querySelectorAll</title>
+<style>body{font-family:system-ui,Arial,sans-serif;margin:24px}.box{width:80px;height:80px;background:#ddd;display:inline-block;margin:6px;border-radius:10px}</style>
+</head><body>
+<h1 id="title">Selecting Elements Demo</h1>
+<div class="box"></div><div class="box"></div><div class="box"></div>
+<button id="styleBtn">Style Boxes</button>
+<script>
+const title=document.querySelector('#title');
+const firstBox=document.querySelector('.box');
+const boxes=document.querySelectorAll('.box');
+document.querySelector('#styleBtn').addEventListener('click',()=>{
+  title.style.color='#2563eb';
+  firstBox.style.background='#fca5a5';
+  boxes.forEach(b=>b.style.border='2px solid #6b7280');
+});
+</script></body></html>

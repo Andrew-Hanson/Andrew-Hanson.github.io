@@ -6,36 +6,40 @@
   <title>About Us | Blackjack Project</title>
   <style>
     :root {
-      --main-color: #FFFFFF;
+      --title-color: #27ae60;
+      --paragraph-color: #f1f1f1;
+      --empty-color: #111111;
+      --container-color: #1a1a1a;
+      --accent-color: #12350f;
     }
     body {
       font-family: Arial, sans-serif;
       line-height: 1.6;
-      background-color: #0b0b0b;
-      color: #f1f1f1;
+      background-color: var(--empty-color);
+      color: var(--paragraph-color);
       margin: 0;
       padding: 0;
     }
     header {
-      background-color: #1a1a1a;
+      background-color: var(--container-color);
       text-align: center;
       padding: 1.5rem;
-      border-bottom: 3px solid --main-color;
+      border-bottom: 5px solid var(--accent-color);
     }
     h1 {
       margin: 0;
-      color: #27ae60;
+      color: var(--title-color);
     }
     main {
       max-width: 800px;
       margin: 2rem auto;
-      background-color: #1f1f1f;
+      background-color: var(--container-color);
       padding: 2rem;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
     h2 {
-      color: #27ae60;
+      color: var(--title-color);
       margin-top: 1.5rem;
     }
     p {
@@ -50,10 +54,10 @@
     }
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 0.5rem;
       font-size: 0.9rem;
-      color: #999;
-      border-top: 1px solid #333;
+      color: grey;
+      border-top: 5px solid var(--accent-color);
     }
   </style>
 </head>

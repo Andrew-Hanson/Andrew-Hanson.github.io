@@ -1,16 +1,126 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Blackjack Homepage</title>
-<style>body{font-family:system-ui,Arial,sans-serif;margin:24px}.box{width:80px;height:80px;background:#ddd;display:inline-block;margin:6px;border-radius:10px}</style>
-</head><body>
-<h1 id="title">Blackjack Homepage</h1>
-<div class="box"></div><div class="box"></div><div class="box"></div>
-<button id="styleBtn">Style Boxes</button>
-<script>
-const title=document.querySelector('#title');
-const firstBox=document.querySelector('.box');
-const boxes=document.querySelectorAll('.box');
-document.querySelector('#styleBtn').addEventListener('click',()=>{
-  title.style.color='#2563eb';
-  firstBox.style.background='#fca5a5';
-  boxes.forEach(b=>b.style.border='2px solid #6b7280');
-});
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <main>
+        <section class="dashboard-cards">
+            <div class="card" id="totalUsers">
+                <h2>Total Users</h2>
+                <p class="card-value">Loading...</p>
+            </div>
+            <div class="card" id="revenue">
+                <h2>Revenue</h2>
+                <p class="card-value">Loading...</p>
+            </div>
+            <div class="card" id="newSignups">
+                <h2>New Signups</h2>
+                <p class="card-value">Loading...</p>
+            </div>
+                <div class="card" id="monthlyActive">
+                <h2>Monthly Active</h2>
+                <p class="card-value">Loading...</p>
+            </div>
+                        <div class="card" id="gamesPlayed">
+                <h2>Games Played</h2>
+                <p class="card-value">Loading...</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
+    </footer>
+    <script>
+        async function loadData() {
+            const response = await fetch('data.json');    // Load JSON data file
+            const data = await response.json();           // Parse the JSON data
+
+            // Update the card values with the data
+            document.getElementById('totalUsers').querySelector('.card-value').textContent = data.totalUsers;
+            document.getElementById('revenue').querySelector('.card-value').textContent = `$${data.revenue}`;
+            document.getElementById('newSignups').querySelector('.card-value').textContent = data.newSignups;
+            document.getElementById('monthlyActive').querySelector('.card-value').textContent = data.monthlyActive;
+            document.getElementById('gamesPlayed').querySelector('.card-value').textContent = data.gamesPlayed;
+        }
+
+        loadData();
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

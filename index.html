@@ -62,7 +62,24 @@
             position: absolute;
             width: 100%;
             bottom: 0;
+            left: 0;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .view{
+            width: 90%;
+            background-color: #333;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        p {
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -93,10 +110,47 @@
             </div>
         </section>
     </main>
+
+    <section class="detail-view">
+
+        <div class ="totalUsers hidden view"> 
+            <p>one</p>
+        </div>
+
+        <div class ="revenue hidden view">
+            <p>two</p>
+
+        </div>
+
+        <div class ="newSignups hidden view">
+            <p>theree</p>
+
+        </div>
+
+        <div class ="monthlyActive hidden view">
+            <p>four</p>
+
+        </div>
+        <div class ="gamesPlayed hidden view">
+            <p>five</p>
+        </div>
+
     <footer>
         <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
     </footer>
+
+
     <script>
+        const cardsContainer = document.querySelector('.dashboard-cards');
+        const detailViews = {
+            totalUsers:    document.querySelector('.detail-view .totalUsers'),
+            revenue:       document.querySelector('.detail-view .revenue'),
+            newSignups:    document.querySelector('.detail-view .newSignups'),
+            monthlyActive: document.querySelector('.detail-view .monthlyActive'),
+            gamesPlayed:   document.querySelector('.detail-view .gamesPlayed'),
+        };
+        let openView = null;
+
         async function loadData() {
             const response = await fetch('data.json');    // Load JSON data file
             const data = await response.json();           // Parse the JSON data
@@ -109,16 +163,35 @@
             document.getElementById('gamesPlayed').querySelector('.card-value').textContent = data.gamesPlayed;
         }
 
+        function hideAllDetails() {
+            Object.values(detailViews).forEach(el => el && el.classList.add('hidden'));
+        }
+
+        function toggleDetailView(id) {
+            const panel = detailViews[id];
+            if (!panel) return;
+
+            // If clicking the already-open card, close it
+            if (openView === id) {
+                panel.classList.add('hidden');
+                openView = null;
+                return;
+            }
+
+            // Otherwise close others, open this one
+            hideAllDetails();
+            panel.classList.remove('hidden');
+            openView = id;
+        }
+
+        cardsContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.card');
+            if (!card) return; // clicked outside a card
+            toggleDetailView(card.id);
+        });
+
+
         loadData();
-
-
-
-
-
-
-
-
-
 
 
     </script>

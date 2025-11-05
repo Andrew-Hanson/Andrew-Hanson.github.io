@@ -26,6 +26,8 @@
 
         main {
             padding: 20px;
+            flex: 1;
+            min-height: 75vh;
         }
 
         .dashboard-cards {
@@ -59,9 +61,8 @@
             padding: 10px;
             background-color: #333;
             color: white;
-            position: absolute;
             width: 100%;
-            bottom: 0;
+            bottom: -5;
             left: 0;
         }
 
@@ -109,32 +110,33 @@
                 <p class="card-value">Loading...</p>
             </div>
         </section>
+
+
+        <section class="detail-view">
+
+            <div class ="totalUsers hidden view" id="totalUsers-hidden-view"> 
+                <p>one</p>
+            </div>
+
+            <div class ="revenue hidden view">
+                <p>two</p>
+
+            </div>
+
+            <div class ="newSignups hidden view">
+                <p>theree</p>
+
+            </div>
+
+            <div class ="monthlyActive hidden view">
+                <p>four</p>
+
+            </div>
+            <div class ="gamesPlayed hidden view">
+                <p>five</p>
+            </div>
+        </section>
     </main>
-
-    <section class="detail-view">
-
-        <div class ="totalUsers hidden view"> 
-            <p>one</p>
-        </div>
-
-        <div class ="revenue hidden view">
-            <p>two</p>
-
-        </div>
-
-        <div class ="newSignups hidden view">
-            <p>theree</p>
-
-        </div>
-
-        <div class ="monthlyActive hidden view">
-            <p>four</p>
-
-        </div>
-        <div class ="gamesPlayed hidden view">
-            <p>five</p>
-        </div>
-
     <footer>
         <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
     </footer>
@@ -149,6 +151,7 @@
             monthlyActive: document.querySelector('.detail-view .monthlyActive'),
             gamesPlayed:   document.querySelector('.detail-view .gamesPlayed'),
         };
+        let allUsers = null;
         let openView = null;
 
         async function loadData() {
@@ -161,6 +164,19 @@
             document.getElementById('newSignups').querySelector('.card-value').textContent = data.newSignups;
             document.getElementById('monthlyActive').querySelector('.card-value').textContent = data.monthlyActive;
             document.getElementById('gamesPlayed').querySelector('.card-value').textContent = data.gamesPlayed;
+            allUsers = data.allUsers;
+
+            // create total useres detail view
+            const totalUsersView = document.getElementById("totalUsers-hidden-view");
+            // Loop through the array and create an element for each string
+            allUsers.forEach(name => {
+                const p = document.createElement("p");  // create a <p> tag
+                p.textContent = name;                   // set its text
+                p.classList.add("name");
+                totalUsersView.appendChild(p);          // add it to the page
+            });
+
+
         }
 
         function hideAllDetails() {

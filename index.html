@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,7 +71,7 @@
             display: none;
         }
 
-        .view{
+        .view {
             width: 90%;
             background-color: #333;
             text-align: center;
@@ -80,9 +81,9 @@
         p {
             color: white;
         }
-
     </style>
 </head>
+
 <body>
     <header>
         <h1>Dashboard</h1>
@@ -101,11 +102,11 @@
                 <h2>New Signups</h2>
                 <p class="card-value">Loading...</p>
             </div>
-                <div class="card" id="monthlyActive">
+            <div class="card" id="monthlyActive">
                 <h2>Monthly Active</h2>
                 <p class="card-value">Loading...</p>
             </div>
-                        <div class="card" id="gamesPlayed">
+            <div class="card" id="gamesPlayed">
                 <h2>Games Played</h2>
                 <p class="card-value">Loading...</p>
             </div>
@@ -114,28 +115,29 @@
 
         <section class="detail-view">
 
-            <div class ="totalUsers hidden view" id="totalUsers-hidden-view"> 
+            <div class="totalUsers hidden view" id="totalUsers-hidden-view">
                 <p>one</p>
             </div>
 
-            <div class ="revenue hidden view">
+            <div class="revenue hidden view">
                 <p>two</p>
 
             </div>
 
-            <div class ="newSignups hidden view">
+            <div class="newSignups hidden view">
                 <p>theree</p>
 
             </div>
 
-            <div class ="monthlyActive hidden view">
+            <div class="monthlyActive hidden view">
                 <p>four</p>
 
             </div>
-            <div class ="gamesPlayed hidden view">
+            <div class="gamesPlayed hidden view">
                 <p>five</p>
             </div>
         </section>
+        <a href="game.html"> <button> Play the game! </button></a>
     </main>
     <footer>
         <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
@@ -145,11 +147,11 @@
     <script>
         const cardsContainer = document.querySelector('.dashboard-cards');
         const detailViews = {
-            totalUsers:    document.querySelector('.detail-view .totalUsers'),
-            revenue:       document.querySelector('.detail-view .revenue'),
-            newSignups:    document.querySelector('.detail-view .newSignups'),
+            totalUsers: document.querySelector('.detail-view .totalUsers'),
+            revenue: document.querySelector('.detail-view .revenue'),
+            newSignups: document.querySelector('.detail-view .newSignups'),
             monthlyActive: document.querySelector('.detail-view .monthlyActive'),
-            gamesPlayed:   document.querySelector('.detail-view .gamesPlayed'),
+            gamesPlayed: document.querySelector('.detail-view .gamesPlayed'),
         };
         let allUsers = null;
         let openView = null;
@@ -212,4 +214,5 @@
 
     </script>
 </body>
+
 </html>

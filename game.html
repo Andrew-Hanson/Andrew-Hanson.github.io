@@ -6,6 +6,14 @@
     <meta charset="UTF-8">
     <meta lang="en">
     <style>
+        .card {
+            border: 1px solid #000000;
+            background-color: rgb(163, 163, 197);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
         .hidden {
             display: none;
         }
@@ -38,7 +46,60 @@
     <div id="login">
         <p> Enter your username </p>
         <input type="text"> <br>
+
     </div>
+
+    <button id="hit"> Generate a hand </button>
+
+    <section id="hitsec" class="card hidden">
+        <div id="hand"> </div>
+    </section>
+
+    <script>
+
+        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+
+
+        function enableFeature(buttonId, sectionId, setupFn) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+                button.disabled = true;
+                if (setupFn) setupFn();
+            }, { once: true });
+        }
+
+        function createRandomHand() {
+            let cardObj = JSON.parse(cardsuits);
+            let currenthand = document.getElementById("hand");
+
+            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
+                let randosuit = Math.floor(Math.random() * 4);
+                let p = document.createElement('p');
+                var enter_card = document.createTextNode(cardObj[randosuit]);
+
+                if (randosuit == 0) {
+                    p.style.fontweight = "bold";
+                } else if (randosuit == 1) {
+                    p.style.fontStyle = "italic";
+                } else if (randosuit == 2) {
+                    p.style.color = "red";
+                } else {
+                    p.style.fontSize = "125%";
+                }
+
+                p.appendChild(enter_card);
+
+
+                currenthand.appendChild(p);
+            }
+        }
+        enableFeature("hit", "hitsec", createRandomHand);
+
+
+    </script>
+
 
 </body>
 

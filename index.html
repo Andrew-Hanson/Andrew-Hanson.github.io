@@ -14,6 +14,8 @@
         }
 
         body {
+            margin: 0px;
+            padding: 0px;
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
         }
@@ -29,6 +31,18 @@
             padding: 20px;
             flex: 1;
             min-height: 75vh;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            max-width: 100%;    
+        }
+        
+        p {
+            color: white;
         }
 
         .dashboard-cards {
@@ -57,16 +71,6 @@
             font-weight: bold;
         }
 
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
-            color: white;
-            width: 100%;
-            bottom: -5;
-            left: 0;
-        }
-
         .hidden {
             display: none;
         }
@@ -78,17 +82,35 @@
             margin: 0 auto;
         }
 
-        p {
+        #team-name{
+            font-size: 18px;
+        }
+
+        #about-link{
             color: white;
+        }
+
+        #game-button{
+            background-color:#4CAF50;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            color: white;
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Dashboard</h1>
+        <h1>Blackjack Dashboard</h1>
     </header>
     <main>
+
+        <a href="game.html"><button id="game-button"> Play Blackjack! </button></a>
+
         <section class="dashboard-cards">
             <div class="card" id="totalUsers">
                 <h2>Total Users</h2>
@@ -137,10 +159,13 @@
                 <p>five</p>
             </div>
         </section>
-        <a href="game.html"> <button> Play the game! </button></a>
+        
     </main>
     <footer>
-        <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
+        <p id="team-name">&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
+        <p>
+            Learn more about our <u><a href="/about-us.html" id="about-link">project and goals!</a></u> 
+        </p>
     </footer>
 
 

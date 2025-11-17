@@ -27,6 +27,7 @@
             border: 10px solid #4CAF50;
             padding: 10px;
             margin: 5px;
+            cursor: pointer;
         }
 
         .card {
@@ -46,9 +47,17 @@
             flex-direction: column;
             align-items: stretch;
             margin: 0 auto;
-            max-width: 180px; 
+            max-width: 200px; 
         }
 
+        #new-register {
+            border: 10px solid white;
+            border-radius: 12px;
+            background-color: white;
+            color: black;
+            margin: 5px 80px;
+        }
+        /*
         #gen-hand{
             display: flex;
             flex-direction: column;
@@ -56,7 +65,8 @@
             margin: 0 auto;
             max-width: 180px; 
         }
-
+        */
+        
     </style>
 </head>
 
@@ -67,32 +77,32 @@
         <div id="player-select">
             <p> Play anonymously or register?</p>
             <button> Play as Guest </button>
-            <button> Already Registered?  </button>
-        </div>
-    
-        <form id="new-register">
-            <label for="fname">Username:</label> <br>
-            <input type="text"> <br>
-            <label for="fname">Age:</label> <br>
-            <input type="text"> <br>
-            <label for="fname">Gender:</label> <br>
-            <input type="radio" id="html" name="fav_language" value="HTML">
-            <label for="html">Male</label><br>
-            <input type="radio" id="css" name="fav_language" value="CSS">
-            <label for="css">Female</label><br>
-            <label for="fname"> Country:</label> <br>
-            <input type="text"> <br>
-        </form>
-    
-        <div id="login">
-            <p> Enter your username </p>
-            <input type="text"> <br>
-    
+            <button id="register-btn"> Register as New Users</button>
         </div>
         
-        <div id="gen-hand">
-            <button id="hit"> Generate a hand </button>
+        <div id="login-info" class="hidden">
+            <form id="new-register">
+                <label for="fname">Username:</label> <br>
+                <input type="text"> <br>
+                <label for="fname">Age:</label> <br>
+                <input type="text"> <br>
+                <label for="fname">Gender:</label> <br>
+                <input type="radio" id="html" name="fav_language" value="HTML">
+                <label for="html">Male</label><br>
+                <input type="radio" id="css" name="fav_language" value="CSS">
+                <label for="css">Female</label><br>
+                <label for="fname"> Country:</label> <br>
+                <input type="text"> <br>
+            </form>
+        
+        
+            <div id="login">
+                <p> Enter your username </p>
+                <input type="text"> <br>
+        
+            </div>
         </div>
+        
         
     
         <section id="hitsec" class="card hidden">
@@ -102,6 +112,18 @@
 
     <script>
 
+        function enableFeature(buttonId, sectionId) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+            
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+            }, { once: true });
+        }
+        enableFeature("register-btn", "login-info");
+
+
+        /*
         const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
 
 
@@ -141,7 +163,7 @@
             }
         }
         enableFeature("hit", "hitsec", createRandomHand);
-
+        */ 
 
     </script>
 

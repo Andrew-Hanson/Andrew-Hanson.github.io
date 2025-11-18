@@ -42,6 +42,15 @@
             display: none;
         }
 
+        .btn-card{
+            border: 10px solid white;
+            border-radius: 12px;
+            background-color: white;
+            color: black;
+            margin: 5px auto;
+            width: 100%;
+        }
+
         #player-select {
             display: flex;
             flex-direction: column;
@@ -51,12 +60,24 @@
         }
 
         #new-register {
-            border: 10px solid white;
-            border-radius: 12px;
-            background-color: white;
-            color: black;
-            margin: 5px 80px;
+            display:flex;
+            flex-direction: column;
+            gap: 12px;
+            
         }
+
+        #new-register input[type="text"] {
+            max-width: 170px;
+            width: 100%;
+            margin: 0 auto;
+        }   
+
+        #new-register label,
+        #new-register input {
+            margin-bottom: 10px;
+        }
+
+
         /*
         #gen-hand{
             display: flex;
@@ -76,38 +97,46 @@
     
         <div id="player-select">
             <p> Play anonymously or register?</p>
-            <button> Play as Guest </button>
-            <button id="register-btn"> Register as New Users</button>
-        </div>
         
-        <div id="login-info" class="hidden">
-            <form id="new-register">
-                <label for="fname">Username:</label> <br>
-                <input type="text"> <br>
-                <label for="fname">Age:</label> <br>
-                <input type="text"> <br>
-                <label for="fname">Gender:</label> <br>
-                <input type="radio" id="html" name="fav_language" value="HTML">
-                <label for="html">Male</label><br>
-                <input type="radio" id="css" name="fav_language" value="CSS">
-                <label for="css">Female</label><br>
-                <label for="fname"> Country:</label> <br>
-                <input type="text"> <br>
-            </form>
+            <button id="guest-btn"> Play as Guest </button>
         
-        
-            <div id="login">
+            <div id="login" class="btn-card hidden">
                 <p> Enter your username </p>
-                <input type="text"> <br>
+                <input type="text">
+            </div>
+        
+            <button id="register-btn"> Register as New Users</button>
+            <div id="login-info" class="btn-card hidden">
+                <form id="new-register">
+                    <label for="fname">Username:</label>
+                    <input type="text">
+        
+                    <label for="fname">Age:</label>
+                    <input type="text">
+        
+                    <label for="fname">Gender:</label>
+                    <div id="#gender-btn">
+                        <label for="html">Male</label>
+                        <input type="radio" id="html" name="fav_language" value="HTML">
+        
+                        <label for="css">Female</label>
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                    </div>
+        
+                    <label for="fname"> Country:</label>
+                    <input type="text">
+        
+                </form>
         
             </div>
+        
         </div>
         
-        
-    
+    <!--   
         <section id="hitsec" class="card hidden">
             <div id="hand"> </div>
         </section>
+    -->
     </main>
 
     <script>
@@ -121,6 +150,7 @@
             }, { once: true });
         }
         enableFeature("register-btn", "login-info");
+        enableFeature("guest-btn", "login");
 
 
         /*

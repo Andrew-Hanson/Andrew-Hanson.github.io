@@ -23,8 +23,8 @@
 
         button{
             background-color: white;
-            border-radius: 18px;
-            border: 10px solid #4CAF50;
+            border-radius: 10px;
+            border: 1px solid white;
             padding: 10px;
             margin: 5px;
             cursor: pointer;
@@ -51,6 +51,15 @@
             width: 100%;
         }
 
+        .btn-start{
+            border-radius: 12px;
+            background-color: #4CAF50;
+            color: white;
+            margin: 20px auto;
+            width: 60%;
+        }
+        
+
         #player-select {
             display: flex;
             flex-direction: column;
@@ -62,19 +71,19 @@
         #new-register {
             display:flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 4px;
             
         }
 
         #new-register input[type="text"] {
             max-width: 170px;
             width: 100%;
-            margin: 0 auto;
+            margin: 0 auto 5px ;
         }   
 
-        #new-register label,
+        
         #new-register input {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
 
@@ -97,37 +106,46 @@
     
         <div id="player-select">
             <p> Play anonymously or register?</p>
-        
-            <button id="guest-btn"> Play as Guest </button>
-        
-            <div id="login" class="btn-card hidden">
-                <p> Enter your username </p>
-                <input type="text">
+            
+            <div id="play-guest">
+                <button id="guest-btn"> Play as Guest </button>
+            
+                <div id="login" class="btn-card hidden">
+                    <p> Enter your username </p>
+                    <input type="text">
+
+                    <button class="btn-start"> Start Game</button>
+                </div>
             </div>
-        
-            <button id="register-btn"> Register as New Users</button>
-            <div id="login-info" class="btn-card hidden">
-                <form id="new-register">
-                    <label for="fname">Username:</label>
-                    <input type="text">
-        
-                    <label for="fname">Age:</label>
-                    <input type="text">
-        
-                    <label for="fname">Gender:</label>
-                    <div id="#gender-btn">
-                        <label for="html">Male</label>
-                        <input type="radio" id="html" name="fav_language" value="HTML">
-        
-                        <label for="css">Female</label>
-                        <input type="radio" id="css" name="fav_language" value="CSS">
-                    </div>
-        
-                    <label for="fname"> Country:</label>
-                    <input type="text">
-        
-                </form>
-        
+
+            <div id="register-guest">
+                <button id="register-btn"> Register as New Users</button>
+                
+                <div id="login-info" class="btn-card hidden">
+                    <form id="new-register">
+                        <label for="fname">Username:</label>
+                        <input type="text">
+            
+                        <label for="fname">Age:</label>
+                        <input type="text">
+            
+                        <label for="fname">Gender:</label>
+                        
+                        <div id="gender-btn">
+                            <label for="html">Male</label>
+                            <input type="radio" id="html" name="fav_language" value="HTML">
+            
+                            <label for="css">Female</label>
+                            <input type="radio" id="css" name="fav_language" value="CSS">
+                        </div>
+            
+                        <label for="fname"> Country:</label>
+                        <input type="text">
+            
+                    </form>
+
+                    <button class="btn-start"> Start Game</button>
+                </div>
             </div>
         
         </div>

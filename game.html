@@ -1,35 +1,17 @@
-<div class="3"></div><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+<!-- 
+
+        const newHeading = document.createElement("h1");
+        newHeading.textContent = "Hello, World!";
+        const newParagraph = document.createElement("p");
+        newParagraph.textContent = "This is embedded HTML content" + playerObj.players.name;
+        Math.floor(Math.random() * 4);
+        Experience + Rounds Played
+-->
 
 <head>
-    <title> Gamepage </title>
-    <meta charset="UTF-8">
-    <meta lang="en">
     <style>
-
-        main {
-            width: 90%;
-            max-width: 500px;
-            background-color: #4CAF50;
-            color: white;
-            margin: 40px auto;
-            padding: 30px;
-            border: 10px solid #4CAF50;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-        
-
-        button{
-            background-color: white;
-            border-radius: 18px;
-            border: 10px solid #4CAF50;
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-        }
-
         .card {
             border: 1px solid #000000;
             background-color: rgb(163, 163, 197);
@@ -41,163 +23,196 @@
         .hidden {
             display: none;
         }
-
-        .btn-card{
-            border: 10px solid white;
-            border-radius: 12px;
-            background-color: white;
-            color: black;
-            margin: 5px auto;
-            width: 100%;
-        }
-
-        #player-select {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            margin: 0 auto;
-            max-width: 200px; 
-        }
-
-        #new-register {
-            display:flex;
-            flex-direction: column;
-            gap: 12px;
-            
-        }
-
-        #new-register input[type="text"] {
-            max-width: 170px;
-            width: 100%;
-            margin: 0 auto;
-        }   
-
-        #new-register label,
-        #new-register input {
-            margin-bottom: 10px;
-        }
-
-
-        /*
-        #gen-hand{
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            margin: 0 auto;
-            max-width: 180px; 
-        }
-        */
-        
     </style>
 </head>
 
 <body>
-    <main>
-        <h1> Test GamePage </h1>
-    
-        <div id="player-select">
-            <p> Play anonymously or register?</p>
-        
-            <button id="guest-btn"> Play as Guest </button>
-        
-            <div id="login" class="btn-card hidden">
-                <p> Enter your username </p>
-                <input type="text">
-            </div>
-        
-            <button id="register-btn"> Register as New Users</button>
-            <div id="login-info" class="btn-card hidden">
-                <form id="new-register">
-                    <label for="fname">Username:</label>
-                    <input type="text">
-        
-                    <label for="fname">Age:</label>
-                    <input type="text">
-        
-                    <label for="fname">Gender:</label>
-                    <div id="#gender-btn">
-                        <label for="html">Male</label>
-                        <input type="radio" id="html" name="fav_language" value="HTML">
-        
-                        <label for="css">Female</label>
-                        <input type="radio" id="css" name="fav_language" value="CSS">
-                    </div>
-        
-                    <label for="fname"> Country:</label>
-                    <input type="text">
-        
-                </form>
-        
-            </div>
-        
-        </div>
-        
-    <!--   
-        <section id="hitsec" class="card hidden">
-            <div id="hand"> </div>
-        </section>
-    -->
-    </main>
+    <button id="show">Show All</button>
+    <button id="sum"> Display Funbucks Total of All Players </button>
+    <button id="exp"> Show Player Experience</button>
+    <button id="win"> Who's on a roll? </button>
+    <button id="hit"> Generate a hand </button>
 
-    <script>
+    <section id="showsec" class="card hidden">
+        <strong> Who's playing the game? </strong>
+        <ul id="players"> Players: </ul>
+    </section>
 
-        function enableFeature(buttonId, sectionId) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-            
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-            }, { once: true });
-        }
-        enableFeature("register-btn", "login-info");
-        enableFeature("guest-btn", "login");
+    <section id="sumsec" class="card hidden">
+        <strong> Funbucks In Circulation: </strong>
+        <div id="container"> </div>
+    </section>
+
+    <section id="expsec" class="card hidden">
+        <strong> How many rounds did they play? </strong>
+
+        <h1> Green (less than 10) </h1>
+        <div id="single"> </div>
+        <h1> Yello (over 10) </h1>
+        <div id="double"> </div>
+        <h1>Redline (over 100) </h1>
+        <div id="triple"> </div>
+    </section>
+
+    <section id="winsec" class="card hidden">
+        <div id="winners"> </div>
+    </section>
 
 
-        /*
-        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+    <section id="hitsec" class="card hidden">
+        <div id="hand"> </div>
+    </section>
 
-
-        function enableFeature(buttonId, sectionId, setupFn) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-                button.disabled = true;
-                if (setupFn) setupFn();
-            }, { once: true });
-        }
-
-        function createRandomHand() {
-            let cardObj = JSON.parse(cardsuits);
-            let currenthand = document.getElementById("hand");
-
-            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
-                let randosuit = Math.floor(Math.random() * 4);
-                let p = document.createElement('p');
-                var enter_card = document.createTextNode(cardObj[randosuit]);
-
-                if (randosuit == 0) {
-                    p.style.fontweight = "bold";
-                } else if (randosuit == 1) {
-                    p.style.fontStyle = "italic";
-                } else if (randosuit == 2) {
-                    p.style.color = "red";
-                } else {
-                    p.style.fontSize = "125%";
-                }
-
-                p.appendChild(enter_card);
-
-
-                currenthand.appendChild(p);
-            }
-        }
-        enableFeature("hit", "hitsec", createRandomHand);
-        */ 
-
-    </script>
 
 
 </body>
+
+<script>
+    const people = '{ "players": [' +
+        '{"name":"John Smith", "rounds_played": 0, "funbucks": 1000, "winning_streak": 0},' +
+        '{"name":"Average Joe", "rounds_played": 13, "funbucks": 2350,"winning_streak": 5},' +
+        '{"name":"Slippin\' Jimmy","rounds_played": 33, "funbucks": 7350, "winning_streak": 7},' +
+        '{"name":"Saul Gon","rounds_played": 20, "funbucks": 0, "winning_streak": 0},' +
+        '{"name":"Robert House","rounds_played": 0, "funbucks": 999999, "winning_streak": 0},' +
+        '{"name":"Leperchaun","rounds_played": 101, "funbucks": 100001, "winning_streak": 101},' +
+        '{"name":"gambit","rounds_played": 80, "funbucks": 18950, "winning_streak": 38}]}';
+
+    const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+
+
+
+    function enableFeature(buttonId, sectionId, setupFn) {
+        const button = document.getElementById(buttonId);
+        const section = document.getElementById(sectionId);
+        button.addEventListener('click', () => {
+            section.classList.remove('hidden');
+            if (setupFn) setupFn();
+        });
+    }
+
+
+    function showAllNames() {
+        let playerObj = JSON.parse(people);
+        var ulist = document.getElementById('players');
+
+        for (let i = 0; i < playerObj.players.length; i++) {
+            var entry = document.createElement('li');
+            let nextname = playerObj.players[i].name;
+            entry.appendChild(document.createTextNode(nextname));
+            ulist.appendChild(entry);
+        }
+    }
+    enableFeature("show", "showsec", showAllNames);
+
+
+    function showFullSum() {
+        let playerObj = JSON.parse(people);
+        var display_total = document.createElement('p');
+        var container = document.getElementById('container');
+
+        var funbuck_total = 0;
+
+        for (let i = 0; i < playerObj.players.length; i++) {
+            let nextamount = playerObj.players[i].funbucks;
+            funbuck_total += nextamount;
+        }
+
+        display_total.appendChild(document.createTextNode(funbuck_total));
+        container.appendChild(display_total);
+
+    }
+    enableFeature("sum", "sumsec", showFullSum);
+
+    function showRoundsEach() {
+        let playerObj = JSON.parse(people);
+        var rounds;
+
+        for (let i = 0; i < playerObj.players.length; i++) {
+            var p = document.createElement('p');
+
+            var person = playerObj.players[i].name;
+            var experience = playerObj.players[i].rounds_played;
+
+            var rounds_sentence = document.createTextNode(person + ": " + experience);
+
+            p.appendChild(rounds_sentence);
+
+            if (playerObj.players[i].rounds_played < 10) {
+                rounds = document.getElementById('single');
+                rounds.style.color = 'green';
+            } else if (playerObj.players[i].rounds_played >= 10 && playerObj.players[i].rounds_played < 100) {
+                rounds = document.getElementById('double');
+                rounds.style.color = 'yellow';
+            } else if (playerObj.players[i].rounds_played >= 100) {
+                rounds = document.getElementById('triple');
+                rounds.style.color = 'red';
+            }
+
+            rounds.appendChild(p);
+        }
+    }
+    enableFeature("exp", "expsec", showRoundsEach);
+
+    function showOnlyWins() {
+        let playerObj = JSON.parse(people);
+
+        var win_container = document.getElementById("winners");
+        for (let i = 0; i < playerObj.players.length; i++) {
+            var streak = playerObj.players[i].winning_streak;
+
+            if (streak > 0) {
+
+                var p = document.createElement('p');
+                var person = playerObj.players[i].name;
+                var winsen = document.createTextNode(person + ": " + streak);
+
+                p.appendChild(winsen);
+                p.style.fontStyle = 'italic';
+
+                if (streak > 10) {
+                    p.style.color = '#F54927';
+                    p.style.fontWeight = 'bold';
+
+                }
+
+                win_container.appendChild(p);
+            }
+
+        }
+    }
+    enableFeature("win", "winsec", showOnlyWins);
+
+
+
+    function createRandomHand() {
+        let cardObj = JSON.parse(cardsuits);
+        let currenthand = document.getElementById("hand");
+
+        for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
+            let randosuit = Math.floor(Math.random() * 4);
+            let p = document.createElement('p');
+            var enter_card = document.createTextNode(cardObj[randosuit]);
+
+            if (randosuit == 0) {
+                p.style.fontweight = "bold";
+            } else if (randosuit == 1) {
+                p.style.fontStyle = "italic";
+            } else if (randosuit == 2) {
+                p.style.color = "red";
+            } else {
+                p.style.fontSize = "125%";
+            }
+
+            p.appendChild(enter_card);
+
+
+            currenthand.appendChild(p);
+        }
+    }
+    enableFeature("hit", "hitsec", createRandomHand);
+
+
+
+</script>
 
 </html>

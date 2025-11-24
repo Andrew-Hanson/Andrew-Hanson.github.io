@@ -89,6 +89,8 @@
             button.disabled = true;
             if (setupFn) setupFn();
         }, { once: true });
+            if (setupFn) setupFn();
+        });
     }
 
 

@@ -1,0 +1,203 @@
+<div class="3"></div><!DOCTYPE html>
+<html>
+
+<head>
+    <title> Gamepage </title>
+    <meta charset="UTF-8">
+    <meta lang="en">
+    <style>
+
+        main {
+            width: 90%;
+            max-width: 500px;
+            background-color: #4CAF50;
+            color: white;
+            margin: 40px auto;
+            padding: 30px;
+            border: 10px solid #4CAF50;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+
+        button{
+            background-color: white;
+            border-radius: 18px;
+            border: 10px solid #4CAF50;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .card {
+            border: 1px solid #000000;
+            background-color: rgb(163, 163, 197);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn-card{
+            border: 10px solid white;
+            border-radius: 12px;
+            background-color: white;
+            color: black;
+            margin: 5px auto;
+            width: 100%;
+        }
+
+        #player-select {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0 auto;
+            max-width: 200px; 
+        }
+
+        #new-register {
+            display:flex;
+            flex-direction: column;
+            gap: 12px;
+            
+        }
+
+        #new-register input[type="text"] {
+            max-width: 170px;
+            width: 100%;
+            margin: 0 auto;
+        }   
+
+        #new-register label,
+        #new-register input {
+            margin-bottom: 10px;
+        }
+
+
+        /*
+        #gen-hand{
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0 auto;
+            max-width: 180px; 
+        }
+        */
+        
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1> Test GamePage </h1>
+    
+        <div id="player-select">
+            <p> Play anonymously or register?</p>
+        
+            <button id="guest-btn"> Play as Guest </button>
+        
+            <div id="login" class="btn-card hidden">
+                <p> Enter your username </p>
+                <input type="text">
+            </div>
+        
+            <button id="register-btn"> Register as New Users</button>
+            <div id="login-info" class="btn-card hidden">
+                <form id="new-register">
+                    <label for="fname">Username:</label>
+                    <input type="text">
+        
+                    <label for="fname">Age:</label>
+                    <input type="text">
+        
+                    <label for="fname">Gender:</label>
+                    <div id="#gender-btn">
+                        <label for="html">Male</label>
+                        <input type="radio" id="html" name="fav_language" value="HTML">
+        
+                        <label for="css">Female</label>
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                    </div>
+        
+                    <label for="fname"> Country:</label>
+                    <input type="text">
+        
+                </form>
+        
+            </div>
+        
+        </div>
+        
+    <!--   
+        <section id="hitsec" class="card hidden">
+            <div id="hand"> </div>
+        </section>
+    -->
+    </main>
+
+    <script>
+
+        function enableFeature(buttonId, sectionId) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+            
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+            }, { once: true });
+        }
+        enableFeature("register-btn", "login-info");
+        enableFeature("guest-btn", "login");
+
+
+        /*
+        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+
+
+        function enableFeature(buttonId, sectionId, setupFn) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+                button.disabled = true;
+                if (setupFn) setupFn();
+            }, { once: true });
+        }
+
+        function createRandomHand() {
+            let cardObj = JSON.parse(cardsuits);
+            let currenthand = document.getElementById("hand");
+
+            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
+                let randosuit = Math.floor(Math.random() * 4);
+                let p = document.createElement('p');
+                var enter_card = document.createTextNode(cardObj[randosuit]);
+
+                if (randosuit == 0) {
+                    p.style.fontweight = "bold";
+                } else if (randosuit == 1) {
+                    p.style.fontStyle = "italic";
+                } else if (randosuit == 2) {
+                    p.style.color = "red";
+                } else {
+                    p.style.fontSize = "125%";
+                }
+
+                p.appendChild(enter_card);
+
+
+                currenthand.appendChild(p);
+            }
+        }
+        enableFeature("hit", "hitsec", createRandomHand);
+        */ 
+
+    </script>
+
+
+</body>
+
+</html>

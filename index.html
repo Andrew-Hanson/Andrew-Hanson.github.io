@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,8 @@
         }
 
         body {
+            margin: 0px;
+            padding: 0px;
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
         }
@@ -26,6 +29,20 @@
 
         main {
             padding: 20px;
+            flex: 1;
+            min-height: 75vh;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            max-width: 100%;    
+        }
+        
+        p {
+            color: white;
         }
 
         .dashboard-cards {
@@ -40,12 +57,14 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            cursor: pointer;
         }
 
         .card h2 {
             font-size: 18px;
             color: #333;
             margin-bottom: 10px;
+            
         }
 
         .card-value {
@@ -54,22 +73,73 @@
             font-weight: bold;
         }
 
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
-            color: white;
-            position: absolute;
-            width: 100%;
-            bottom: 0;
+        .hidden {
+            display: none;
         }
+
+        .view {
+            width: 90%;
+            background-color: #333;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .view p{
+            margin: 0;
+            padding: 10px;
+        }
+
+        .name:nth-child(odd){
+            background-color: #333;
+        }
+
+        .name:nth-child(even){
+            background-color: #444;
+        }
+
+        .name {
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        #team-name{
+            font-size: 18px;
+        }
+
+        #about-link{
+            color: white;
+        }
+
+        #game-button{
+            background-color:#4CAF50;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            color: white;
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        #game-button:hover {
+            background-color: #2c662e;
+            border: 1px solid #2c662e;
+        }
+
     </style>
 </head>
+
 <body>
     <header>
-        <h1>Dashboard</h1>
+        <h1>Blackjack Dashboard</h1>
     </header>
     <main>
+
+        <a href="game.html"><button id="game-button"> Play Blackjack! </button></a>
+
         <section class="dashboard-cards">
             <div class="card" id="totalUsers">
                 <h2>Total Users</h2>
@@ -83,20 +153,63 @@
                 <h2>New Signups</h2>
                 <p class="card-value">Loading...</p>
             </div>
-                <div class="card" id="monthlyActive">
+            <div class="card" id="monthlyActive">
                 <h2>Monthly Active</h2>
                 <p class="card-value">Loading...</p>
             </div>
-                        <div class="card" id="gamesPlayed">
+            <div class="card" id="gamesPlayed">
                 <h2>Games Played</h2>
                 <p class="card-value">Loading...</p>
             </div>
         </section>
+
+
+        <section class="detail-view">
+
+            <div class="totalUsers hidden view" id="totalUsers-hidden-view">
+                <p>one</p>
+            </div>
+
+            <div class="revenue hidden view">
+                <p>two</p>
+
+            </div>
+
+            <div class="newSignups hidden view">
+                <p>theree</p>
+
+            </div>
+
+            <div class="monthlyActive hidden view">
+                <p>four</p>
+
+            </div>
+            <div class="gamesPlayed hidden view">
+                <p>five</p>
+            </div>
+        </section>
+        
     </main>
     <footer>
-        <p>&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
+        <p id="team-name">&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
+        <p>
+            Learn more about our <u><a href="/about-us.html" id="about-link">project and goals!</a></u> 
+        </p>
     </footer>
+
+
     <script>
+        const cardsContainer = document.querySelector('.dashboard-cards');
+        const detailViews = {
+            totalUsers: document.querySelector('.detail-view .totalUsers'),
+            revenue: document.querySelector('.detail-view .revenue'),
+            newSignups: document.querySelector('.detail-view .newSignups'),
+            monthlyActive: document.querySelector('.detail-view .monthlyActive'),
+            gamesPlayed: document.querySelector('.detail-view .gamesPlayed'),
+        };
+        let allUsers = null;
+        let openView = null;
+
         async function loadData() {
             const response = await fetch('data.json');    // Load JSON data file
             const data = await response.json();           // Parse the JSON data
@@ -107,20 +220,53 @@
             document.getElementById('newSignups').querySelector('.card-value').textContent = data.newSignups;
             document.getElementById('monthlyActive').querySelector('.card-value').textContent = data.monthlyActive;
             document.getElementById('gamesPlayed').querySelector('.card-value').textContent = data.gamesPlayed;
+            allUsers = data.allUsers;
+
+            // create total useres detail view
+            const totalUsersView = document.getElementById("totalUsers-hidden-view");
+            // Loop through the array and create an element for each string
+            allUsers.forEach(name => {
+                const p = document.createElement("p");  // create a <p> tag
+                p.textContent = name;                   // set its text
+                p.classList.add("name");
+                totalUsersView.appendChild(p);          // add it to the page
+            });
+
+
         }
+
+        function hideAllDetails() {
+            Object.values(detailViews).forEach(el => el && el.classList.add('hidden'));
+        }
+
+        function toggleDetailView(id) {
+            const panel = detailViews[id];
+            if (!panel) return;
+
+            // If clicking the already-open card, close it
+            if (openView === id) {
+                panel.classList.add('hidden');
+                openView = null;
+                return;
+            }
+
+            // Otherwise close others, open this one
+            hideAllDetails();
+            panel.classList.remove('hidden');
+            openView = id;
+        }
+
+        cardsContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.card');
+            if (!card) return; // clicked outside a card
+            toggleDetailView(card.id);
+        });
+
 
         loadData();
 
 
-
-
-
-
-
-
-
-
-
     </script>
 </body>
+
 </html>

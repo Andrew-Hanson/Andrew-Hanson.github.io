@@ -86,6 +86,9 @@
         const section = document.getElementById(sectionId);
         button.addEventListener('click', () => {
             section.classList.remove('hidden');
+            button.disabled = true;
+            if (setupFn) setupFn();
+        }, { once: true });
             if (setupFn) setupFn();
         });
     }

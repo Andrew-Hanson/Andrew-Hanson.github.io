@@ -1,4 +1,5 @@
-<div class="3"></div><!DOCTYPE html>
+<div class="3"></div>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -6,8 +7,7 @@
     <meta charset="UTF-8">
     <meta lang="en">
     <style>
-
-        main {
+        #start-menu {
             width: 90%;
             max-width: 500px;
             background-color: #4CAF50;
@@ -19,9 +19,40 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
-        
 
-        button{
+        .box {
+            width: 66%;
+            right: 17%;
+            height: 200px;
+            border: 2px solid #000200;
+
+            background-color: #787e78;
+            padding: 10px;
+            alignment-baseline: central;
+        }
+
+        #dealer {
+            position: fixed;
+            top: 1;
+
+        }
+
+        #player {
+
+            position: fixed;
+
+            bottom: 1;
+        }
+
+        #actions {
+            width: 30px;
+            bottom: 0;
+            right: 10%;
+            position: fixed;
+        }
+
+
+        button {
             background-color: white;
             border-radius: 18px;
             border: 10px solid #4CAF50;
@@ -31,18 +62,36 @@
         }
 
         .card {
-            border: 1px solid #000000;
-            background-color: rgb(163, 163, 197);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 12px;
+            border: solid 2px #000000;
+            border-radius: 9px;
+            width: 95px;
+            height: 150px;
+            float: left;
+            background-color: white;
+            padding: 3px 3px 3px 3px;
+            margin: 5px;
+        }
+
+        .value {
+            font-size: 15pt;
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+
+        #startbet {
+            position: fixed;
+            height: 25%;
+
+            position: fixed;
+            left: 40%;
+            top: 50%;
         }
 
         .hidden {
             display: none;
         }
 
-        .btn-card{
+        .btn-card {
             border: 10px solid white;
             border-radius: 12px;
             background-color: white;
@@ -56,27 +105,26 @@
             flex-direction: column;
             align-items: stretch;
             margin: 0 auto;
-            max-width: 200px; 
+            max-width: 200px;
         }
 
         #new-register {
-            display:flex;
+            display: flex;
             flex-direction: column;
             gap: 12px;
-            
+
         }
 
         #new-register input[type="text"] {
             max-width: 170px;
             width: 100%;
             margin: 0 auto;
-        }   
+        }
 
         #new-register label,
         #new-register input {
             margin-bottom: 10px;
         }
-
 
         /*
         #gen-hand{
@@ -87,52 +135,85 @@
             max-width: 180px; 
         }
         */
-        
     </style>
 </head>
 
 <body>
     <main>
-        <h1> Test GamePage </h1>
-    
-        <div id="player-select">
-            <p> Play anonymously or register?</p>
-        
-            <button id="guest-btn"> Play as Guest </button>
-        
-            <div id="login" class="btn-card hidden">
-                <p> Enter your username </p>
-                <input type="text">
-            </div>
-        
-            <button id="register-btn"> Register as New Users</button>
-            <div id="login-info" class="btn-card hidden">
-                <form id="new-register">
-                    <label for="fname">Username:</label>
-                    <input type="text">
-        
-                    <label for="fname">Age:</label>
-                    <input type="text">
-        
-                    <label for="fname">Gender:</label>
-                    <div id="#gender-btn">
-                        <label for="html">Male</label>
-                        <input type="radio" id="html" name="fav_language" value="HTML">
-        
-                        <label for="css">Female</label>
-                        <input type="radio" id="css" name="fav_language" value="CSS">
-                    </div>
-        
-                    <label for="fname"> Country:</label>
-                    <input type="text">
-        
+
+        <div id="start-menu">
+            <h1> Test GamePage </h1>
+            <div id="player-select">
+                <p> Play anonymously or register?</p>
+
+                <button id="guest-btn"> Play as Guest </button>
+
+                <div id="login" class="btn-card hidden">
+                    <p> Enter your username </p>
+                    <input id="guest-name" type="text">
+
+                </div>
+
+                <!-- 
+                <button id="register-btn"> Register as New Users</button>
+                <div id="login-info" class="btn-card hidden">
+                    <form id="new-register">
+                        <label for="fname">Username:</label>
+                        <input type="text">
+
+                        <label for="fname">Age:</label>
+                        <input type="text">
+
+                        <label for="fname">Gender:</label>
+                        <div id="#gender-btn">
+                            <label for="html">Male</label>
+                            <input type="radio" id="html" name="fav_language" value="HTML">
+
+                            <label for="css">Female</label>
+                            <input type="radio" id="css" name="fav_language" value="CSS">
+                        </div>
+
+                        <label for="fname"> Country:</label>
+                        <input type="text">
+                        -->
                 </form>
-        
+
             </div>
-        
+
         </div>
-        
-    <!--   
+
+        </div>
+
+        <div id="startbet" class="hidden">
+            <label>Initial Bet:</label>
+            <input type="text" id="startvalue">
+        </div>
+
+
+        <div id="game" class='hidden'>
+
+
+
+
+            <div id="dealer" class="box"> Test 1
+            </div>
+            <div id="player" class="box"> Test 2
+            </div>
+
+
+            <div id="actions">
+                <button id="hit"> Hit </button>
+                <button id="stand"> Stand </button>
+                <button id="double"> Double Down</button>
+            </div>
+
+            <div id="bet"> Test: </div>
+
+        </div>
+
+
+
+        <!--   
         <section id="hitsec" class="card hidden">
             <div id="hand"> </div>
         </section>
@@ -141,20 +222,146 @@
 
     <script>
 
+        const starting_cash = 100000;
+
+        isGameRunning = false;
+
+        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+        const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+
+
+        function addCard(person) {
+
+            let number = Math.floor(Math.random() * 13);
+
+            let card = document.createElement("div");
+            let value = document.createElement("span");
+
+            card.classList.add("card")
+            card.classList.add("value")
+
+            value.innerText = cardvalues[number];
+            let num_value = value.innerText;
+
+            switch (num_value) {
+
+                case "A":
+                    num_value = 1;
+                    break;
+                case "J":
+                    num_value = 11;
+                    break;
+                case "Q":
+                    num_value = 12;
+                    break;
+                case "K":
+                    num_value = 13;
+                    break;
+                default:
+                    num_value = parseInt(num_value, 10);
+            }
+
+            card.appendChild(value);
+
+            document.getElementById(person).appendChild(card);
+
+            return num_value;
+        }
+
+        //do a game while initial bet is made
+
         function enableFeature(buttonId, sectionId) {
             const button = document.getElementById(buttonId);
             const section = document.getElementById(sectionId);
-            
+
             button.addEventListener('click', () => {
                 section.classList.remove('hidden');
             }, { once: true });
         }
-        enableFeature("register-btn", "login-info");
         enableFeature("guest-btn", "login");
 
 
+
+        document.getElementById("guest-btn").addEventListener("click", () => {
+            guestInput = document.getElementById("guest-name");
+
+            guestInput.addEventListener('keypress', function (event) {
+                if (event.key === "Enter") {
+                    document.getElementById("start-menu").classList.add("hidden");
+                    document.getElementById("startbet").classList.remove("hidden");
+                }
+            });
+        });
+
+
+        let starting = 100;
+        do {
+
+
+            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+
+                    // Get the input as integer
+                    let valueInt = parseInt(event.target.value, 10);
+
+                    // Save it
+                    starting = valueInt;
+                    document.getElementById("bet").innerText = starting;
+
+                    // Hide div, show game
+                    document.getElementById("startbet").classList.add("hidden");
+                    document.getElementById("game").classList.remove("hidden");
+                }
+            });
+
+
+
+
+            let player = document.getElementById("player");
+            let dealer = document.getElementById("dealer");
+
+            let dealerscore = 0;
+            let playerscore = 0;
+
+
+            dealerscore += addCard("dealer")
+            dealerscore += addCard("dealer");
+
+            playerscore += addCard("player");
+            playerscore += addCard("player");
+
+            let hit = document.getElementById('hit');
+            let stand = document.getElementById('stand');
+            let dd = document.getElementById("double")
+
+            hit.addEventListener("click", () => {
+                playerscore += addCard("player");
+                dealerscore += addCard("dealer");
+            });
+
+            dd.addEventListener("click", () => {
+                playerscore += addCard("player");
+                dealerscore += addCard("dealer");
+
+
+                starting = starting * 2;
+                document.getElementById("bet").innerText = starting;
+
+            });
+
+            stand.addEventListener("click", () => {
+                document.getElementById("player").innerText = playerscore;
+                document.getElementById("dealer").innerText = dealerscore;
+            });
+
+
+        } while (isGameRunning);
+
+
+
+
         /*
-        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+       
 
 
         function enableFeature(buttonId, sectionId, setupFn) {
@@ -193,7 +400,7 @@
             }
         }
         enableFeature("hit", "hitsec", createRandomHand);
-        */ 
+        */
 
     </script>
 

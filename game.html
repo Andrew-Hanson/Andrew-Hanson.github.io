@@ -78,14 +78,7 @@
             font-family: sans-serif;
         }
 
-        #startbet {
-            position: fixed;
-            height: 25%;
-
-            position: fixed;
-            left: 40%;
-            top: 50%;
-        }
+        #startbet {}
 
         .hidden {
             display: none;
@@ -98,6 +91,17 @@
             color: black;
             margin: 5px auto;
             width: 100%;
+        }
+
+        .centered {
+
+            position: fixed;
+            height: 25%;
+
+            position: fixed;
+            left: 40%;
+            top: 50%;
+
         }
 
         #player-select {
@@ -184,10 +188,12 @@
 
         </div>
 
-        <div id="startbet" class="hidden">
+        <div id="startbet" class="hidden centered">
             <label>Initial Bet:</label>
             <input type="text" id="startvalue">
         </div>
+
+
 
 
         <div id="game" class='hidden'>
@@ -195,10 +201,11 @@
 
 
 
-            <div id="dealer" class="box"> Test 1
+            <div id="dealer" class="box">
             </div>
-            <div id="player" class="box"> Test 2
+            <div id="player" class="box">
             </div>
+
 
 
             <div id="actions">
@@ -208,6 +215,12 @@
             </div>
 
             <div id="bet"> Test: </div>
+
+            <div id="restart" class="centered hidden"> Play Another Game?
+
+                <button onclick="restart()"> Yes </button>
+                <button> No </button>
+            </div>
 
         </div>
 
@@ -222,12 +235,91 @@
 
     <script>
 
-        const starting_cash = 100000;
+        function hitHandler(playerscore, dealerscore) {
+            playerscore += addCard("player");
+            dealerscore += addCard("dealer");
+        }
+
+        function doubleHandler(playerscore, dealerscore) {
+            playerscore += addCard("player");
+            dealerscore += addCard("dealer");
+            starting = starting * 2;
+            document.getElementById("bet").innerText = starting;
+        }
+
+        function standHandler(playerscore, dealerscore) {
+            document.getElementById("restart").classList.remove("hidden");
+
+
+            // remove listeners to prevent stacking next round
+            hit.removeEventListener("click", hitHandler);
+            dd.removeEventListener("click", doubleHandler);
+            stand.removeEventListener("click", standHandler);
+        }
+
+
+
+        function restart() {
+
+            document.getElementById("player").innerText = "";
+            document.getElementById("dealer").innerText = "";
+
+            document.getElementById("restart").classList.add("hidden");
+            document.getElementById("game").classList.add("hidden");
+
+            document.getElementById("startbet").classList.remove("hidden");
+            gameRun();
+        }
+
+        function gameRun() {
+            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+
+                    // Get the input as integer
+                    let valueInt = parseInt(event.target.value, 10);
+
+                    // Save it
+                    starting = valueInt;
+                    document.getElementById("bet").innerText = starting;
+
+                    // Hide div, show game
+                    document.getElementById("startbet").classList.add("hidden");
+                    document.getElementById("game").classList.remove("hidden");
+                }
+            });
+
+
+
+
+            let player = document.getElementById("player");
+            let dealer = document.getElementById("dealer");
+
+            let dealerscore = 0;
+            let playerscore = 0;
+ 
+
+            dealerscore += addCard("dealer")
+            dealerscore += addCard("dealer");
+
+            playerscore += addCard("player");
+            playerscore += addCard("player");
+
+            let hit = document.getElementById('hit');
+            let stand = document.getElementById('stand');
+            let dd = document.getElementById("double")
+
+            hit.addEventListener("click", hitHandler);
+            dd.addEventListener("click", doubleHandler);
+            stand.addEventListener("click", standHandler);
+        }
+
+        let starting_cash = 100000;
 
         isGameRunning = false;
 
         const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
         const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+
 
 
         function addCard(person) {
@@ -269,7 +361,6 @@
         }
 
         //do a game while initial bet is made
-
         function enableFeature(buttonId, sectionId) {
             const button = document.getElementById(buttonId);
             const section = document.getElementById(sectionId);
@@ -279,7 +370,6 @@
             }, { once: true });
         }
         enableFeature("guest-btn", "login");
-
 
 
         document.getElementById("guest-btn").addEventListener("click", () => {
@@ -293,114 +383,12 @@
             });
         });
 
-
-        let starting = 100;
-        do {
-
-
-            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-
-                    // Get the input as integer
-                    let valueInt = parseInt(event.target.value, 10);
-
-                    // Save it
-                    starting = valueInt;
-                    document.getElementById("bet").innerText = starting;
-
-                    // Hide div, show game
-                    document.getElementById("startbet").classList.add("hidden");
-                    document.getElementById("game").classList.remove("hidden");
-                }
-            });
+        gameRun();
 
 
 
 
-            let player = document.getElementById("player");
-            let dealer = document.getElementById("dealer");
 
-            let dealerscore = 0;
-            let playerscore = 0;
-
-
-            dealerscore += addCard("dealer")
-            dealerscore += addCard("dealer");
-
-            playerscore += addCard("player");
-            playerscore += addCard("player");
-
-            let hit = document.getElementById('hit');
-            let stand = document.getElementById('stand');
-            let dd = document.getElementById("double")
-
-            hit.addEventListener("click", () => {
-                playerscore += addCard("player");
-                dealerscore += addCard("dealer");
-            });
-
-            dd.addEventListener("click", () => {
-                playerscore += addCard("player");
-                dealerscore += addCard("dealer");
-
-
-                starting = starting * 2;
-                document.getElementById("bet").innerText = starting;
-
-            });
-
-            stand.addEventListener("click", () => {
-                document.getElementById("player").innerText = playerscore;
-                document.getElementById("dealer").innerText = dealerscore;
-            });
-
-
-        } while (isGameRunning);
-
-
-
-
-        /*
-       
-
-
-        function enableFeature(buttonId, sectionId, setupFn) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-                button.disabled = true;
-                if (setupFn) setupFn();
-            }, { once: true });
-        }
-
-        function createRandomHand() {
-            let cardObj = JSON.parse(cardsuits);
-            let currenthand = document.getElementById("hand");
-
-            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
-                let randosuit = Math.floor(Math.random() * 4);
-                let p = document.createElement('p');
-                var enter_card = document.createTextNode(cardObj[randosuit]);
-
-                if (randosuit == 0) {
-                    p.style.fontweight = "bold";
-                } else if (randosuit == 1) {
-                    p.style.fontStyle = "italic";
-                } else if (randosuit == 2) {
-                    p.style.color = "red";
-                } else {
-                    p.style.fontSize = "125%";
-                }
-
-                p.appendChild(enter_card);
-
-
-                currenthand.appendChild(p);
-            }
-        }
-        enableFeature("hit", "hitsec", createRandomHand);
-        */
 
     </script>
 

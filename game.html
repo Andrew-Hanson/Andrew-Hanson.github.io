@@ -1,9 +1,8 @@
-<div class="3"></div>
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title> Gamepage </title>
+    <title>Gamepage</title>
     <meta charset="UTF-8">
     <meta lang="en">
     <style>
@@ -25,7 +24,6 @@
             right: 17%;
             height: 200px;
             border: 2px solid #000200;
-
             background-color: #787e78;
             padding: 10px;
             alignment-baseline: central;
@@ -33,15 +31,12 @@
 
         #dealer {
             position: fixed;
-            top: 1;
-
+            top: 1rem;
         }
 
         #player {
-
             position: fixed;
-
-            bottom: 1;
+            bottom: 1rem;
         }
 
         #actions {
@@ -50,7 +45,6 @@
             right: 10%;
             position: fixed;
         }
-
 
         button {
             background-color: white;
@@ -72,6 +66,15 @@
             margin: 5px;
         }
 
+        /*
+        .card {
+            border: 1px solid #000000;
+            background-color: rgb(163, 163, 197);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+        */
         .value {
             font-size: 15pt;
             font-weight: bold;
@@ -94,14 +97,10 @@
         }
 
         .centered {
-
             position: fixed;
             height: 25%;
-
-            position: fixed;
             left: 40%;
             top: 50%;
-
         }
 
         #player-select {
@@ -116,7 +115,6 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-
         }
 
         #new-register input[type="text"] {
@@ -146,197 +144,118 @@
     <main>
 
         <div id="start-menu">
-            <h1> Test GamePage </h1>
+            <h1>Test GamePage</h1>
             <div id="player-select">
-                <p> Play anonymously or register?</p>
+                <p>Play anonymously or register?</p>
 
-                <button id="guest-btn"> Play as Guest </button>
+                <button id="guest-btn">Play as Guest</button>
 
                 <div id="login" class="btn-card hidden">
-                    <p> Enter your username </p>
+                    <p>Enter your username</p>
                     <input id="guest-name" type="text">
-
                 </div>
 
                 <!-- 
-                <button id="register-btn"> Register as New Users</button>
+                <button id="register-btn">Register as New Users</button>
                 <div id="login-info" class="btn-card hidden">
                     <form id="new-register">
                         <label for="fname">Username:</label>
                         <input type="text">
 
-                        <label for="fname">Age:</label>
-                        <input type="text">
+                        <label for="age">Age:</label>
+                        <input type="text" id="age">
 
-                        <label for="fname">Gender:</label>
-                        <div id="#gender-btn">
-                            <label for="html">Male</label>
-                            <input type="radio" id="html" name="fav_language" value="HTML">
+                        <label for="gender">Gender:</label>
+                        <div id="gender-btn">
+                            <label for="male">Male</label>
+                            <input type="radio" id="male" name="gender" value="M">
 
-                            <label for="css">Female</label>
-                            <input type="radio" id="css" name="fav_language" value="CSS">
+                            <label for="female">Female</label>
+                            <input type="radio" id="female" name="gender" value="F">
                         </div>
 
-                        <label for="fname"> Country:</label>
-                        <input type="text">
-                        -->
-                </form>
-
+                        <label for="country">Country:</label>
+                        <input type="text" id="country">
+                    </form>
+                </div>
+                -->
             </div>
-
-        </div>
-
         </div>
 
         <div id="startbet" class="hidden centered">
-            <label>Initial Bet:</label>
+            <label for="startvalue">Initial Bet:</label>
             <input type="text" id="startvalue">
         </div>
 
-
-
-
-        <div id="game" class='hidden'>
-
-
-
-
-            <div id="dealer" class="box">
-            </div>
-            <div id="player" class="box">
-            </div>
-
-
+        <div id="game" class="hidden">
+            <div id="dealer" class="box"></div>
+            <div id="player" class="box"></div>
 
             <div id="actions">
-                <button id="hit"> Hit </button>
-                <button id="stand"> Stand </button>
-                <button id="double"> Double Down</button>
+                <button id="hit">Hit</button>
+                <button id="stand">Stand</button>
+                <button id="double">Double Down</button>
             </div>
 
-            <div id="bet"> Test: </div>
+            <div id="bet">Bet: </div>
 
-            <div id="restart" class="centered hidden"> Play Another Game?
-
-                <button onclick="restart()"> Yes </button>
-                <button> No </button>
+            <div id="restart" class="centered hidden">
+                Play Another Game?
+                <button onclick="restart()">Yes</button>
+                <button>No</button>
             </div>
-
         </div>
-
-
 
         <!--   
         <section id="hitsec" class="card hidden">
             <div id="hand"> </div>
         </section>
-    -->
+    	-->
     </main>
-
     <script>
-
-        function hitHandler(playerscore, dealerscore) {
-            playerscore += addCard("player");
-            dealerscore += addCard("dealer");
-        }
-
-        function doubleHandler(playerscore, dealerscore) {
-            playerscore += addCard("player");
-            dealerscore += addCard("dealer");
-            starting = starting * 2;
-            document.getElementById("bet").innerText = starting;
-        }
-
-        function standHandler(playerscore, dealerscore) {
-            document.getElementById("restart").classList.remove("hidden");
-
-
-            // remove listeners to prevent stacking next round
-            hit.removeEventListener("click", hitHandler);
-            dd.removeEventListener("click", doubleHandler);
-            stand.removeEventListener("click", standHandler);
-        }
-
-
-
-        function restart() {
-
-            document.getElementById("player").innerText = "";
-            document.getElementById("dealer").innerText = "";
-
-            document.getElementById("restart").classList.add("hidden");
-            document.getElementById("game").classList.add("hidden");
-
-            document.getElementById("startbet").classList.remove("hidden");
-            gameRun();
-        }
-
-        function gameRun() {
-            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-
-                    // Get the input as integer
-                    let valueInt = parseInt(event.target.value, 10);
-
-                    // Save it
-                    starting = valueInt;
-                    document.getElementById("bet").innerText = starting;
-
-                    // Hide div, show game
-                    document.getElementById("startbet").classList.add("hidden");
-                    document.getElementById("game").classList.remove("hidden");
-                }
-            });
-
-
-
-
-            let player = document.getElementById("player");
-            let dealer = document.getElementById("dealer");
-
-            let dealerscore = 0;
-            let playerscore = 0;
- 
-
-            dealerscore += addCard("dealer")
-            dealerscore += addCard("dealer");
-
-            playerscore += addCard("player");
-            playerscore += addCard("player");
-
-            let hit = document.getElementById('hit');
-            let stand = document.getElementById('stand');
-            let dd = document.getElementById("double")
-
-            hit.addEventListener("click", hitHandler);
-            dd.addEventListener("click", doubleHandler);
-            stand.addEventListener("click", standHandler);
-        }
-
-        let starting_cash = 100000;
-
-        isGameRunning = false;
-
+//         const newHeading = document.createElement("h1");
+//         newHeading.textContent = "Hello, World!";
+//         const newParagraph = document.createElement("p");
+//         newParagraph.textContent = "This is embedded HTML content" + playerObj.players.name;
+//         Math.floor(Math.random() * 4);
+//         Experience + Rounds Played
+    
         const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
         const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
+        let starting_cash = 100000;
+        let starting = 0;
+        let isGameRunning = false;
+        let dealerscore = 0;
+        let playerscore = 0;
 
+        // Buttons shared across handlers
+        let hit, stand, dd;
+
+        function enableFeature(buttonId, sectionId) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+            }, { once: true });
+        }
+
+		enableFeature("guest-btn", "login");
 
         function addCard(person) {
-
             let number = Math.floor(Math.random() * 13);
 
             let card = document.createElement("div");
             let value = document.createElement("span");
 
-            card.classList.add("card")
-            card.classList.add("value")
+            card.classList.add("card");
+            value.classList.add("value");
 
             value.innerText = cardvalues[number];
             let num_value = value.innerText;
 
             switch (num_value) {
-
                 case "A":
                     num_value = 1;
                     break;
@@ -354,45 +273,97 @@
             }
 
             card.appendChild(value);
-
             document.getElementById(person).appendChild(card);
-
             return num_value;
         }
 
-        //do a game while initial bet is made
-        function enableFeature(buttonId, sectionId) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-            }, { once: true });
+        function hitHandler() {
+            playerscore += addCard("player");
+            dealerscore += addCard("dealer");
+            // TODO: add bust / win logic here
         }
-        enableFeature("guest-btn", "login");
 
+        function doubleHandler() {
+            playerscore += addCard("player");
+            dealerscore += addCard("dealer");
+            starting = starting * 2;
+            document.getElementById("bet").innerText = "Bet: " + starting;
+        }
+
+        function standHandler() {
+            document.getElementById("restart").classList.remove("hidden");
+
+            // remove listeners to prevent stacking next round
+            hit.removeEventListener("click", hitHandler);
+            dd.removeEventListener("click", doubleHandler);
+            stand.removeEventListener("click", standHandler);
+        }
+
+        function restart() {
+            document.getElementById("player").innerText = "";
+            document.getElementById("dealer").innerText = "";
+
+            document.getElementById("restart").classList.add("hidden");
+            document.getElementById("game").classList.add("hidden");
+
+            document.getElementById("startbet").classList.remove("hidden");
+            gameRun();
+        }
+
+        function gameRun() {
+            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    // Get the input as integer
+                    let valueInt = parseInt(event.target.value, 10);
+
+                    if (isNaN(valueInt) || valueInt <= 0) {
+                        // You can replace this with a nicer UI later
+                        alert("Please enter a valid positive number for your bet.");
+                        return;
+                    }
+
+                    // Save it
+                    starting = valueInt;
+                    document.getElementById("bet").innerText = "Bet: " + starting;
+
+                    // Hide div, show game
+                    document.getElementById("startbet").classList.add("hidden");
+                    document.getElementById("game").classList.remove("hidden");
+                }
+            }, { once: true });
+
+            // Reset scores for this round
+            dealerscore = 0;
+            playerscore = 0;
+
+            dealerscore += addCard("dealer");
+            dealerscore += addCard("dealer");
+
+            playerscore += addCard("player");
+            playerscore += addCard("player");
+
+            // Initialize global button refs
+            hit = document.getElementById('hit');
+            stand = document.getElementById('stand');
+            dd = document.getElementById("double");
+
+            hit.addEventListener("click", hitHandler);
+            dd.addEventListener("click", doubleHandler);
+            stand.addEventListener("click", standHandler);
+        }
 
         document.getElementById("guest-btn").addEventListener("click", () => {
-            guestInput = document.getElementById("guest-name");
+            const guestInput = document.getElementById("guest-name");
 
             guestInput.addEventListener('keypress', function (event) {
                 if (event.key === "Enter") {
                     document.getElementById("start-menu").classList.add("hidden");
                     document.getElementById("startbet").classList.remove("hidden");
                 }
-            });
+            }, { once: true });
         });
 
         gameRun();
-
-
-
-
-
-
     </script>
-
-
 </body>
-
 </html>

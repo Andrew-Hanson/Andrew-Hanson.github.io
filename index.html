@@ -1,272 +1,377 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="3"></div><!DOCTYPE html>
+<html>
 
 <head>
+    <title> Welcome Page </title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta lang="en">
     <style>
-        :root {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0px;
-            padding: 0px;
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-        }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
 
         main {
-            padding: 20px;
-            flex: 1;
-            min-height: 75vh;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
+            width: 90%;
+            max-width: 500px;
+            background-color: #4CAF50;
             color: white;
-            max-width: 100%;    
-        }
-        
-        p {
-            color: white;
-        }
-
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background-color: white;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 10px solid #4CAF50;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             text-align: center;
+        }
+        
+
+        button{
+            background-color: white;
+            border-radius: 18px;
+            border: 10px solid #4CAF50;
+            padding: 10px;
+            margin: 5px;
             cursor: pointer;
         }
 
-        .card h2 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-            
-        }
-
-        .card-value {
-            font-size: 32px;
-            color: #4CAF50;
-            font-weight: bold;
+        .card {
+            border: 1px solid #000000;
+            background-color: rgb(163, 163, 197);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
         }
 
         .hidden {
             display: none;
         }
 
-        .view {
-            width: 90%;
-            background-color: #333;
-            text-align: center;
+        .btn-card{
+            border: 10px solid white;
+            border-radius: 12px;
+            background-color: white;
+            color: black;
+            margin: 5px auto;
+            width: 100%;
+        }
+
+        #player-select {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
             margin: 0 auto;
+            max-width: 300px; 
         }
 
-        .view p{
-            margin: 0;
-            padding: 10px;
+        #new-register {
+            display:flex;
+            flex-direction: column;
+            gap: 12px;
+            
         }
 
-        .name:nth-child(odd){
-            background-color: #333;
+        #new-register input[type="text"] {
+            max-width: 170px;
+            width: 100%;
+            margin: 0 auto;
+        }   
+
+        #new-register label,
+        #new-register input {
+            margin-bottom: 10px;
+        }
+        .login div {
+            display: flex;
+            margin: 8px auto;
+
+        }
+        .input-error {
+            border: 2px solid red;
+        }
+        .error-message {
+            color: red;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+        #register-submit {
+            align-self: center;
+            width: auto;
+            padding: 8px 32px;
+            border: 2px solid #000000;
         }
 
-        .name:nth-child(even){
-            background-color: #444;
+        /*
+        #gen-hand{
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0 auto;
+            max-width: 180px; 
         }
-
-        .name {
-            color: white;
-            font-size: 16px;
-            padding: 12px;
-            cursor: pointer;
-        }
-
-        #team-name{
-            font-size: 18px;
-        }
-
-        #about-link{
-            color: white;
-        }
-
-        #game-button{
-            background-color:#4CAF50;
-            border-radius: 5px;
-            border: 1px solid #4CAF50;
-            color: white;
-            padding: 8px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-        }
-
-        #game-button:hover {
-            background-color: #2c662e;
-            border: 1px solid #2c662e;
-        }
-
+        */
+        
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>Blackjack Dashboard</h1>
-    </header>
     <main>
-
-        <a href="game.html"><button id="game-button"> Play Blackjack! </button></a>
-
-        <section class="dashboard-cards">
-            <div class="card" id="totalUsers">
-                <h2>Total Users</h2>
-                <p class="card-value">Loading...</p>
-            </div>
-            <div class="card" id="revenue">
-                <h2>Revenue</h2>
-                <p class="card-value">Loading...</p>
-            </div>
-            <div class="card" id="newSignups">
-                <h2>New Signups</h2>
-                <p class="card-value">Loading...</p>
-            </div>
-            <div class="card" id="monthlyActive">
-                <h2>Monthly Active</h2>
-                <p class="card-value">Loading...</p>
-            </div>
-            <div class="card" id="gamesPlayed">
-                <h2>Games Played</h2>
-                <p class="card-value">Loading...</p>
-            </div>
-        </section>
-
-
-        <section class="detail-view">
-
-            <div class="totalUsers hidden view" id="totalUsers-hidden-view">
-                <p>one</p>
-            </div>
-
-            <div class="revenue hidden view">
-                <p>two</p>
-
-            </div>
-
-            <div class="newSignups hidden view">
-                <p>theree</p>
-
-            </div>
-
-            <div class="monthlyActive hidden view">
-                <p>four</p>
-
-            </div>
-            <div class="gamesPlayed hidden view">
-                <p>five</p>
-            </div>
-        </section>
+        <h1> Test GamePage </h1>
+    
+        <div id="player-select">
+            <p> Play anonymously or register?</p>
         
-    </main>
-    <footer>
-        <p id="team-name">&copy; 2025 Blackjack Project | Team Hanson, Huynh, & Ordona</p>
-        <p>
-            Learn more about our <u><a href="/about-us.html" id="about-link">project and goals!</a></u> 
-        </p>
-    </footer>
+            <button id="guest-btn"> Play as Guest </button>
 
+            <div id="guest-info" class="btn-card hidden">
+                <div class="login">
+                    <p> Enter your username </p>
+                    <input type="text">
+                </div>
+            </div>
+
+            <button id="login-btn"> Sign In </button>
+            <div id="login-info" class="btn-card hidden">
+                <div class="login">
+                    <div>
+                        <label for="login-username">Username:</label>
+                        <input id="login-username" type="text" placeholder="Enter username">
+                    </div>
+                    <p id="login-username-error" class="error-message hidden">
+                        Username must be 3–16 letters, numbers, or underscores.
+                    </p>
+                    <div>
+                        <label for="login-password">Password:</label>
+                        <input id="login-password" type="password" placeholder="Enter password">
+                    </div>
+                    <p id="login-password-error" class="error-message hidden">
+                        Password must be at least 8 characters and include a letter and a number.
+                    </p>
+                </div>
+            </div>
+
+            <button id="register-btn"> Register Now</button>
+
+            <div id="register-info" class="btn-card hidden">
+                <form id="new-register">
+
+                    <div>
+                        <label for="reg-username">Username:</label>
+                        <input id="reg-username" type="text" placeholder="Choose a username">
+                    </div>
+                    <small id="reg-username-error" class="error-message hidden">
+                        Username must be 3–16 letters, numbers, or underscores.
+                    </small>
+
+                    <div>
+                        <label for="reg-password">Password:</label>
+                        <input id="reg-password" type="password" placeholder="Create a password">
+                    </div>
+                    <small id="reg-password-error" class="error-message hidden">
+                        Password must be at least 8 characters and include a letter and a number.
+                    </small>
+        
+                    <div>
+                        <label for="reg-age">Age:</label>
+                        <input id="reg-age" type="text" placeholder="Age">
+                    </div>
+                    <small id="reg-age-error" class="error-message hidden">
+                        Enter a valid age between 13 and 120.
+                    </small>
+        
+                    <div>
+                        <span>Gender:</span>
+                        <div id="gender-btn">
+                            <label for="gender-male">Male</label>
+                            <input type="radio" id="gender-male" name="gender" value="male">
+
+                            <label for="gender-female">Female</label>
+                            <input type="radio" id="gender-female" name="gender" value="female">
+                        </div>
+                        <small id="reg-gender-error" class="error-message hidden">
+                            Please select a gender.
+                        </small>
+                    </div>
+        
+                    <div>
+                        <label for="reg-country">Country:</label>
+                        <input id="reg-country" type="text" placeholder="Country">
+                        <small id="reg-country-error" class="error-message hidden">
+                            Country name must be 2–40 letters.
+                        </small>
+                    </div>
+
+                    <button type="button" id="register-submit">
+                        Create Account
+                    </button>
+    
+                </form>
+        
+            </div>
+        
+        </div>
+        
+    <!--   
+        <section id="hitsec" class="card hidden">
+            <div id="hand"> </div>
+        </section>
+    -->
+    </main>
 
     <script>
-        const cardsContainer = document.querySelector('.dashboard-cards');
-        const detailViews = {
-            totalUsers: document.querySelector('.detail-view .totalUsers'),
-            revenue: document.querySelector('.detail-view .revenue'),
-            newSignups: document.querySelector('.detail-view .newSignups'),
-            monthlyActive: document.querySelector('.detail-view .monthlyActive'),
-            gamesPlayed: document.querySelector('.detail-view .gamesPlayed'),
-        };
-        let allUsers = null;
-        let openView = null;
 
-        async function loadData() {
-            const response = await fetch('data.json');    // Load JSON data file
-            const data = await response.json();           // Parse the JSON data
+        function enableFeature(buttonId, sectionId, setupFn) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
 
-            // Update the card values with the data
-            document.getElementById('totalUsers').querySelector('.card-value').textContent = data.totalUsers;
-            document.getElementById('revenue').querySelector('.card-value').textContent = `$${data.revenue}`;
-            document.getElementById('newSignups').querySelector('.card-value').textContent = data.newSignups;
-            document.getElementById('monthlyActive').querySelector('.card-value').textContent = data.monthlyActive;
-            document.getElementById('gamesPlayed').querySelector('.card-value').textContent = data.gamesPlayed;
-            allUsers = data.allUsers;
-
-            // create total useres detail view
-            const totalUsersView = document.getElementById("totalUsers-hidden-view");
-            // Loop through the array and create an element for each string
-            allUsers.forEach(name => {
-                const p = document.createElement("p");  // create a <p> tag
-                p.textContent = name;                   // set its text
-                p.classList.add("name");
-                totalUsersView.appendChild(p);          // add it to the page
-            });
-
-
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+                if (setupFn) setupFn();
+            }, { once: true });
         }
 
-        function hideAllDetails() {
-            Object.values(detailViews).forEach(el => el && el.classList.add('hidden'));
-        }
-
-        function toggleDetailView(id) {
-            const panel = detailViews[id];
-            if (!panel) return;
-
-            // If clicking the already-open card, close it
-            if (openView === id) {
-                panel.classList.add('hidden');
-                openView = null;
-                return;
-            }
-
-            // Otherwise close others, open this one
-            hideAllDetails();
-            panel.classList.remove('hidden');
-            openView = id;
-        }
-
-        cardsContainer.addEventListener('click', (e) => {
-            const card = e.target.closest('.card');
-            if (!card) return; // clicked outside a card
-            toggleDetailView(card.id);
+        enableFeature("register-btn", "register-info", () => {
+            attachValidation(regUsernameInput, usernameRegex, regUsernameError);
+            attachValidation(regPasswordInput, passwordRegex, regPasswordError);
+            attachValidation(regAgeInput, ageRegex, regAgeError);
+            attachValidation(regCountryInput, countryRegex, regCountryError);
+            genderRadios.forEach(radio => radio.addEventListener('change', validateGender));
         });
 
+        enableFeature("login-btn", "login-info", () => {
+            attachValidation(loginUsernameInput, usernameRegex, loginUsernameError);
+            attachValidation(loginPasswordInput, passwordRegex, loginPasswordError);
+        });
+        enableFeature("guest-btn", "guest-info");
 
-        loadData();
+        /*
+        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
 
 
+        function enableFeature(buttonId, sectionId, setupFn) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+                button.disabled = true;
+                if (setupFn) setupFn();
+            }, { once: true });
+        }
+
+        function createRandomHand() {
+            let cardObj = JSON.parse(cardsuits);
+            let currenthand = document.getElementById("hand");
+
+            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
+                let randosuit = Math.floor(Math.random() * 4);
+                let p = document.createElement('p');
+                var enter_card = document.createTextNode(cardObj[randosuit]);
+
+                if (randosuit == 0) {
+                    p.style.fontweight = "bold";
+                } else if (randosuit == 1) {
+                    p.style.fontStyle = "italic";
+                } else if (randosuit == 2) {
+                    p.style.color = "red";
+                } else {
+                    p.style.fontSize = "125%";
+                }
+
+                p.appendChild(enter_card);
+
+
+                currenthand.appendChild(p);
+            }
+        }
+        enableFeature("hit", "hitsec", createRandomHand);
+        */ 
+
+        const usernameRegex = /^[A-Za-z0-9_]{3,16}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+        const ageRegex = /^(1[3-9]|[2-9]\d|1[01]\d|120)$/;
+        const countryRegex = /^[A-Za-z\s'-]{2,40}$/;
+
+        const loginUsernameInput = document.getElementById('login-username');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginUsernameError = document.getElementById('login-username-error');
+        const loginPasswordError = document.getElementById('login-password-error');
+        const regUsernameInput = document.getElementById('reg-username');
+        const regPasswordInput = document.getElementById('reg-password');
+        const regAgeInput = document.getElementById('reg-age');
+        const regCountryInput = document.getElementById('reg-country');
+        const regUsernameError = document.getElementById('reg-username-error');
+        const regPasswordError = document.getElementById('reg-password-error');
+        const regAgeError = document.getElementById('reg-age-error');
+        const regCountryError = document.getElementById('reg-country-error');
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
+        const regGenderError = document.getElementById('reg-gender-error');
+        const registerSubmitBtn = document.getElementById('register-submit');
+
+        function attachValidation(inputEl, regex, errorEl) {
+            if (!inputEl || !errorEl) return;
+
+            inputEl.addEventListener('input', () => {
+                const value = inputEl.value;
+
+                if (regex.test(value)) {
+                    // valid
+                    inputEl.classList.remove('input-error');
+                    errorEl.classList.add('hidden');
+                } else {
+                    // invalid
+                    inputEl.classList.add('input-error');
+                    errorEl.classList.remove('hidden');
+                }
+            });
+        }
+
+        function validateGender() {
+            const anyChecked = Array.from(genderRadios).some(r => r.checked);
+            if (anyChecked) {
+                regGenderError.classList.add('hidden');
+            } else {
+                regGenderError.classList.remove('hidden');
+            }
+        }
+
+        genderRadios.forEach(radio => {
+            radio.addEventListener('change', validateGender);
+        });
+
+        if (registerSubmitBtn) {
+            registerSubmitBtn.addEventListener('click', () => {
+            // Trigger text-field validation by checking their current values
+            const usernameValid = usernameRegex.test(regUsernameInput.value);
+            const passwordValid = passwordRegex.test(regPasswordInput.value);
+            const ageValid = ageRegex.test(regAgeInput.value);
+            const countryValid = countryRegex.test(regCountryInput.value);
+            validateGender();
+            const genderValid = Array.from(genderRadios).some(r => r.checked);
+
+            // Manually show errors if user clicks submit without typing
+            if (!usernameValid) {
+                regUsernameInput.classList.add('input-error');
+                regUsernameError.classList.remove('hidden');
+            }
+            if (!passwordValid) {
+                regPasswordInput.classList.add('input-error');
+                regPasswordError.classList.remove('hidden');
+            }
+            if (!ageValid) {
+                regAgeInput.classList.add('input-error');
+                regAgeError.classList.remove('hidden');
+            }
+            if (!countryValid) {
+                regCountryInput.classList.add('input-error');
+                regCountryError.classList.remove('hidden');
+            }
+
+            if (usernameValid && passwordValid && ageValid && countryValid && genderValid) {
+                // TODO
+                console.log('Registration valid!');
+            }
+       });
+    }
+
+            
     </script>
+
+
 </body>
 
 </html>

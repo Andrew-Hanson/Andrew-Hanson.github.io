@@ -181,6 +181,42 @@
             }, { once: true });
         }
 
+        function endRound(message) {
+            alert(message);
+            document.getElementById("restart").classList.remove("hidden");
+
+            // Disable buttons so they don't stack
+            hit.removeEventListener("click", hitHandler);
+            dd.removeEventListener("click", doubleHandler);
+            stand.removeEventListener("click", standHandler);
+        }
+
+        function computeHandValue(containerId) {
+            const cards = document.getElementById(containerId).querySelectorAll(".value");
+            let total = 0;
+            let aces = 0;
+
+            cards.forEach(card => {
+                let v = card.innerText;
+
+                if (v === "A") {
+                    total += 11;
+                    aces++;
+                } else if (["J", "Q", "K"].includes(v)) {
+                    total += 10;
+                } else {
+                    total += parseInt(v, 10);
+                }
+            });
+
+            // Reduce Ace from 11 → 1 if over 21
+            while (total > 21 && aces > 0) {
+                total -= 10;
+                aces--;
+            }
+            return total;
+        }
+
         function addCard(person) {
             let number = Math.floor(Math.random() * 13);
 
@@ -216,25 +252,42 @@
         }
 
         function hitHandler() {
-            playerscore += addCard("player");
-            dealerscore += addCard("dealer");
-            // TODO: add bust / win logic here
+            addCard("player");
+
+            playerscore = computeHandValue("player");
+            if (playerscore > 21) {
+                endRound("BUST! You went over 21.");
+            }
         }
 
         function doubleHandler() {
             playerscore += addCard("player");
-            dealerscore += addCard("dealer");
             starting = starting * 2;
             document.getElementById("bet").innerText = "Bet: " + starting;
         }
 
         function standHandler() {
-            document.getElementById("restart").classList.remove("hidden");
+            playerscore = computeHandValue("player");
+            dealerscore = computeHandValue("dealer");
 
-            // remove listeners to prevent stacking next round
-            hit.removeEventListener("click", hitHandler);
-            dd.removeEventListener("click", doubleHandler);
-            stand.removeEventListener("click", standHandler);
+            // Dealer keeps hitting while behind the player and not busted
+            while (dealerscore < playerscore && dealerscore <= 21) {
+                addCard("dealer");
+                dealerscore = computeHandValue("dealer");
+            }
+            let message;
+
+            if (dealerscore > 21) {
+                message = `Dealer busts with ${dealerscore}. You win!`;
+            } else if (dealerscore > playerscore) {
+                message = `Dealer wins ${dealerscore} vs ${playerscore}.`;
+            } else if (dealerscore === playerscore) {
+                message = `Push: both have ${playerscore}.`;
+            } else {
+                message = `You win ${playerscore} vs ${dealerscore}.`;
+            }
+
+            endRound(message);
         }
 
         function restart() {
@@ -248,6 +301,7 @@
             document.getElementById("startbet").classList.remove("hidden");
             // clear previous bet
             document.getElementById("startvalue").value = "";
+            betInput.focus();
         }
 
         function gameRun() {

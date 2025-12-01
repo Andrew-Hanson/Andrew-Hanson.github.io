@@ -219,6 +219,11 @@
         const registerSubmitBtn = document.getElementById('register-submit');
         const guestUsernameInput = document.getElementById('guest-username');
 
+        const STORAGE_KEYS = {
+            currentUser: 'game.currentUser',
+            users: 'game.users'
+        };
+
         function enableFeature(buttonId, sectionId, setupFn) {
             const button = document.getElementById(buttonId);
             const section = document.getElementById(sectionId);

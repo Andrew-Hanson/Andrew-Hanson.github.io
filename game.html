@@ -198,6 +198,7 @@
             </div>
 
             <div id="bet">Bet: </div>
+            <div id="uname">User:</div>
 
             <div id="restart" class="centered hidden">
                 Play Another Game?
@@ -241,6 +242,16 @@
         }
 
 		enableFeature("guest-btn", "login");
+
+        const key = "game.currentUser";   // same key you saved
+        const raw = localStorage.getItem(key);
+
+        let currentUser = null;
+
+        if (raw) {
+            currentUser = JSON.parse(raw);
+            document.getElementById("uname").innerText = `Player: ${currentUser.username}`;
+        }
 
         function addCard(person) {
             let number = Math.floor(Math.random() * 13);

@@ -225,7 +225,6 @@
 
         let starting_cash = 100000;
         let starting = 0;
-        let isGameRunning = false;
         let dealerscore = 0;
         let playerscore = 0;
 
@@ -306,32 +305,13 @@
             document.getElementById("restart").classList.add("hidden");
             document.getElementById("game").classList.add("hidden");
 
+            // Show bet screen again; next round will start after next bet
             document.getElementById("startbet").classList.remove("hidden");
-            gameRun();
+            // clear previous bet
+            document.getElementById("startvalue").value = "";
         }
 
         function gameRun() {
-            document.querySelector("#startbet input").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    // Get the input as integer
-                    let valueInt = parseInt(event.target.value, 10);
-
-                    if (isNaN(valueInt) || valueInt <= 0) {
-                        // You can replace this with a nicer UI later
-                        alert("Please enter a valid positive number for your bet.");
-                        return;
-                    }
-
-                    // Save it
-                    starting = valueInt;
-                    document.getElementById("bet").innerText = "Bet: " + starting;
-
-                    // Hide div, show game
-                    document.getElementById("startbet").classList.add("hidden");
-                    document.getElementById("game").classList.remove("hidden");
-                }
-            }, { once: true });
-
             // Reset scores for this round
             dealerscore = 0;
             playerscore = 0;
@@ -355,15 +335,37 @@
         document.getElementById("guest-btn").addEventListener("click", () => {
             const guestInput = document.getElementById("guest-name");
 
-            guestInput.addEventListener('keypress', function (event) {
+            guestInput.addEventListener('keydown', function (event) {
                 if (event.key === "Enter") {
                     document.getElementById("start-menu").classList.add("hidden");
                     document.getElementById("startbet").classList.remove("hidden");
+                    // Focus bet box right away
+                    document.getElementById("startvalue").focus();
                 }
             }, { once: true });
         });
 
-        gameRun();
+        const betInput = document.getElementById("startvalue");
+        betInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                // Get the input as integer
+                let valueInt = parseInt(event.target.value, 10);
+
+                if (isNaN(valueInt) || valueInt <= 0) {
+                    alert("Please enter a valid positive number for your bet.");
+                    return;
+                }
+
+                // Save it
+                starting = valueInt;
+                document.getElementById("bet").innerText = "Bet: " + starting;
+
+                // Hide bet screen, show game, start round
+                document.getElementById("startbet").classList.add("hidden");
+                document.getElementById("game").classList.remove("hidden");
+                gameRun();
+            }
+        });
     </script>
 </body>
 </html>

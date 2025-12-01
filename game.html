@@ -131,6 +131,7 @@
 
             <div id="bet">Bet: </div>
             <div id="uname-display">User:</div>
+            <div id="balance">Balance: </div>
 
             <div id="restart" class="centered hidden">
                 Play Another Game?
@@ -164,13 +165,16 @@
         const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
         const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
-        let starting_cash = 100000;
+        // let starting_cash = 100000;
         let starting = 0;
         let dealerscore = 0;
         let playerscore = 0;
+        let balance = 100000;
 
         // Buttons shared across handlers
         let hit, stand, dd;
+
+        loadCurrentUser()
 
         function enableFeature(buttonId, sectionId) {
             const button = document.getElementById(buttonId);
@@ -179,6 +183,39 @@
             button.addEventListener('click', () => {
                 section.classList.remove('hidden');
             }, { once: true });
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function loadCurrentUser() {
+            const raw = localStorage.getItem(STORAGE_KEYS.currentUser);
+            if (!raw) return;
+
+            currentUser = JSON.parse(raw);
+
+            if (currentUser.balance && currentUser.balance > 0) {
+                balance = currentUser.balance;    
+            } else {
+                currentUser.balance = balance;
+            }
+
+            const unameEl = document.getElementById("uname");
+            if (unameEl) {
+                unameEl.innerText = `Player: ${currentUser.username}`;
+            }
+
+            updateBalance();
+        }
+
+        function updateBalance() {
+            const bal = document.getElementById("balance");
+            if (bal) {
+                bal.innerText = `Balance: ${balance}`;
+            }
+            currentUser.balance = balance;
+            localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(currentUser));
         }
 
         function endRound(message) {
@@ -251,11 +288,15 @@
             return num_value;
         }
 
-        function hitHandler() {
+        async function hitHandler() {
             addCard("player");
 
             playerscore = computeHandValue("player");
             if (playerscore > 21) {
+                balance -= starting;
+                updateBalance();
+                await sleep(500);
+
                 endRound("BUST! You went over 21.");
             }
         }
@@ -266,7 +307,7 @@
             document.getElementById("bet").innerText = "Bet: " + starting;
         }
 
-        function standHandler() {
+        async function standHandler() {
             playerscore = computeHandValue("player");
             dealerscore = computeHandValue("dealer");
 
@@ -274,19 +315,25 @@
             while (dealerscore < playerscore && dealerscore <= 21) {
                 addCard("dealer");
                 dealerscore = computeHandValue("dealer");
+                await sleep(500);
             }
             let message;
 
             if (dealerscore > 21) {
                 message = `Dealer busts with ${dealerscore}. You win!`;
+                balance += starting;
             } else if (dealerscore > playerscore) {
                 message = `Dealer wins ${dealerscore} vs ${playerscore}.`;
+                balance -= starting;
             } else if (dealerscore === playerscore) {
                 message = `Push: both have ${playerscore}.`;
             } else {
                 message = `You win ${playerscore} vs ${dealerscore}.`;
+                balance += starting;
             }
-
+            
+            updateBalance();
+            await sleep(500);
             endRound(message);
         }
 

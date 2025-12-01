@@ -87,15 +87,6 @@
             display: none;
         }
 
-        .btn-card {
-            border: 10px solid white;
-            border-radius: 12px;
-            background-color: white;
-            color: black;
-            margin: 5px auto;
-            width: 100%;
-        }
-
         .centered {
             position: fixed;
             height: 25%;
@@ -110,33 +101,6 @@
             margin: 0 auto;
             max-width: 200px;
         }
-
-        #new-register {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        #new-register input[type="text"] {
-            max-width: 170px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        #new-register label,
-        #new-register input {
-            margin-bottom: 10px;
-        }
-
-        /*
-        #gen-hand{
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            margin: 0 auto;
-            max-width: 180px; 
-        }
-        */
     </style>
 </head>
 
@@ -144,45 +108,13 @@
     <main>
 
         <div id="start-menu">
-            <h1>Test GamePage</h1>
-            <div id="player-select">
-                <p>Play anonymously or register?</p>
-
-                <button id="guest-btn">Play as Guest</button>
-
-                <div id="login" class="btn-card hidden">
-                    <p>Enter your username</p>
-                    <input id="guest-name" type="text">
-                </div>
-
-                <!-- 
-                <button id="register-btn">Register as New Users</button>
-                <div id="login-info" class="btn-card hidden">
-                    <form id="new-register">
-                        <label for="fname">Username:</label>
-                        <input type="text">
-
-                        <label for="age">Age:</label>
-                        <input type="text" id="age">
-
-                        <label for="gender">Gender:</label>
-                        <div id="gender-btn">
-                            <label for="male">Male</label>
-                            <input type="radio" id="male" name="gender" value="M">
-
-                            <label for="female">Female</label>
-                            <input type="radio" id="female" name="gender" value="F">
-                        </div>
-
-                        <label for="country">Country:</label>
-                        <input type="text" id="country">
-                    </form>
-                </div>
-                -->
+            <h1>Blackjack</h1>
+            <div id="user-bar">
+                <span id="uname">Player:</span>
             </div>
         </div>
 
-        <div id="startbet" class="hidden centered">
+        <div id="startbet" class="centered">
             <label for="startvalue">Initial Bet:</label>
             <input type="text" id="startvalue">
         </div>
@@ -198,7 +130,7 @@
             </div>
 
             <div id="bet">Bet: </div>
-            <div id="uname">User:</div>
+            <div id="uname-display">User:</div>
 
             <div id="restart" class="centered hidden">
                 Play Another Game?
@@ -206,21 +138,29 @@
                 <button>No</button>
             </div>
         </div>
-
-        <!--   
-        <section id="hitsec" class="card hidden">
-            <div id="hand"> </div>
-        </section>
-    	-->
     </main>
     <script>
-//         const newHeading = document.createElement("h1");
-//         newHeading.textContent = "Hello, World!";
-//         const newParagraph = document.createElement("p");
-//         newParagraph.textContent = "This is embedded HTML content" + playerObj.players.name;
-//         Math.floor(Math.random() * 4);
-//         Experience + Rounds Played
+        // const newHeading = document.createElement("h1");
+        // newHeading.textContent = "Hello, World!";
+        // const newParagraph = document.createElement("p");
+        // newParagraph.textContent = "This is embedded HTML content" + playerObj.players.name;
+        // Math.floor(Math.random() * 4);
+        // Experience + Rounds Played
     
+        const STORAGE_KEYS = {
+            currentUser: 'game.currentUser'
+        };
+        const rawUser = localStorage.getItem(STORAGE_KEYS.currentUser);
+
+        if (!rawUser) {
+            // No logged-in user – send them back to login page
+            window.location.href = "index.html";
+        } else {
+            currentUser = JSON.parse(rawUser);
+        }
+
+        const unameHeader = document.getElementById("uname");
+        const unameInGame = document.getElementById("uname-display");
         const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
         const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
@@ -239,18 +179,6 @@
             button.addEventListener('click', () => {
                 section.classList.remove('hidden');
             }, { once: true });
-        }
-
-		enableFeature("guest-btn", "login");
-
-        const key = "game.currentUser";   // same key you saved
-        const raw = localStorage.getItem(key);
-
-        let currentUser = null;
-
-        if (raw) {
-            currentUser = JSON.parse(raw);
-            document.getElementById("uname").innerText = `Player: ${currentUser.username}`;
         }
 
         function addCard(person) {
@@ -343,18 +271,10 @@
             stand.addEventListener("click", standHandler);
         }
 
-        document.getElementById("guest-btn").addEventListener("click", () => {
-            const guestInput = document.getElementById("guest-name");
-
-            guestInput.addEventListener('keydown', function (event) {
-                if (event.key === "Enter") {
-                    document.getElementById("start-menu").classList.add("hidden");
-                    document.getElementById("startbet").classList.remove("hidden");
-                    // Focus bet box right away
-                    document.getElementById("startvalue").focus();
-                }
-            }, { once: true });
-        });
+        if (currentUser) {
+            unameHeader.textContent = `Player: ${currentUser.username}`;
+            unameInGame.textContent = `User: ${currentUser.username}`;
+        }
 
         const betInput = document.getElementById("startvalue");
         betInput.addEventListener("keydown", function (event) {

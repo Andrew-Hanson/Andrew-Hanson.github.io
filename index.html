@@ -276,6 +276,43 @@
             }
         }
 
+        function handleLogin() {
+            const username = loginUsernameInput.value.trim();
+            const password = loginPasswordInput.value;
+
+            // basic format validation first
+            const usernameValid = usernameRegex.test(username);
+            const passwordFormatValid = passwordRegex.test(password);
+
+            if (!usernameValid) {
+                return;
+            }
+
+            if (!passwordFormatValid) {
+                return;
+            }
+
+            // look up user in localStorage
+            const raw = localStorage.getItem(STORAGE_KEYS.users);
+            const users = raw ? JSON.parse(raw) : [];
+
+            const foundUser = users.find(u => u.username === username);
+
+            if (!foundUser) {
+                // user not found
+                loginUsernameInput.classList.add('input-error');
+                loginUsernameError.textContent = "No account found with that username.";
+                loginUsernameError.classList.remove('hidden');
+                return;
+            }
+
+            // success
+            saveCurrentUser(foundUser);
+            console.log("Logged in as:", foundUser.username);
+
+            window.location.href = "game.html";
+        }
+
         enableFeature("register-btn", "register-info", () => {
             attachValidation(regUsernameInput, usernameRegex, regUsernameError);
             attachValidation(regPasswordInput, passwordRegex, regPasswordError);
@@ -328,7 +365,8 @@
                 const user = {
                     type: 'registered',
                     username: regUsernameInput.value.trim(),
-                    password: regPasswordInput.value, // demo only; real app would hash
+                    // don't actually save passswords
+                    // password: regPasswordInput.value,
                     age: parseInt(regAgeInput.value, 10),
                     gender,
                     country: regCountryInput.value.trim()
@@ -359,9 +397,15 @@
                 };
 
                 saveCurrentUser(user);
-                console.log('Guest user saved:', user);
-
                 window.location.href = "game.html";
+            }
+        });
+    }
+
+    if (loginPasswordInput) {
+        loginPasswordInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                handleLogin();
             }
         });
     }

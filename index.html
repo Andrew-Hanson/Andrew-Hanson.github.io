@@ -20,7 +20,6 @@
             text-align: center;
         }
         
-
         button{
             background-color: white;
             border-radius: 18px;
@@ -94,18 +93,7 @@
             width: auto;
             padding: 8px 32px;
             border: 2px solid #000000;
-        }
-
-        /*
-        #gen-hand{
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            margin: 0 auto;
-            max-width: 180px; 
-        }
-        */
-        
+        }        
     </style>
 </head>
 
@@ -121,7 +109,7 @@
             <div id="guest-info" class="btn-card hidden">
                 <div class="login">
                     <p> Enter your username </p>
-                    <input type="text">
+                    <input id="guest-username" type="text" placeholder="Guest name">
                 </div>
             </div>
 
@@ -205,82 +193,8 @@
             </div>
         
         </div>
-        
-    <!--   
-        <section id="hitsec" class="card hidden">
-            <div id="hand"> </div>
-        </section>
-    -->
     </main>
-
     <script>
-
-        function enableFeature(buttonId, sectionId, setupFn) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-                if (setupFn) setupFn();
-            }, { once: true });
-        }
-
-        enableFeature("register-btn", "register-info", () => {
-            attachValidation(regUsernameInput, usernameRegex, regUsernameError);
-            attachValidation(regPasswordInput, passwordRegex, regPasswordError);
-            attachValidation(regAgeInput, ageRegex, regAgeError);
-            attachValidation(regCountryInput, countryRegex, regCountryError);
-            genderRadios.forEach(radio => radio.addEventListener('change', validateGender));
-        });
-
-        enableFeature("login-btn", "login-info", () => {
-            attachValidation(loginUsernameInput, usernameRegex, loginUsernameError);
-            attachValidation(loginPasswordInput, passwordRegex, loginPasswordError);
-        });
-        enableFeature("guest-btn", "guest-info");
-
-        /*
-        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
-
-
-        function enableFeature(buttonId, sectionId, setupFn) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-                button.disabled = true;
-                if (setupFn) setupFn();
-            }, { once: true });
-        }
-
-        function createRandomHand() {
-            let cardObj = JSON.parse(cardsuits);
-            let currenthand = document.getElementById("hand");
-
-            for (var i = 0; i < Math.floor(Math.random() * 4) + 1; i++) {
-                let randosuit = Math.floor(Math.random() * 4);
-                let p = document.createElement('p');
-                var enter_card = document.createTextNode(cardObj[randosuit]);
-
-                if (randosuit == 0) {
-                    p.style.fontweight = "bold";
-                } else if (randosuit == 1) {
-                    p.style.fontStyle = "italic";
-                } else if (randosuit == 2) {
-                    p.style.color = "red";
-                } else {
-                    p.style.fontSize = "125%";
-                }
-
-                p.appendChild(enter_card);
-
-
-                currenthand.appendChild(p);
-            }
-        }
-        enableFeature("hit", "hitsec", createRandomHand);
-        */ 
-
         const usernameRegex = /^[A-Za-z0-9_]{3,16}$/;
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
         const ageRegex = /^(1[3-9]|[2-9]\d|1[01]\d|120)$/;
@@ -290,6 +204,7 @@
         const loginPasswordInput = document.getElementById('login-password');
         const loginUsernameError = document.getElementById('login-username-error');
         const loginPasswordError = document.getElementById('login-password-error');
+
         const regUsernameInput = document.getElementById('reg-username');
         const regPasswordInput = document.getElementById('reg-password');
         const regAgeInput = document.getElementById('reg-age');
@@ -298,9 +213,36 @@
         const regPasswordError = document.getElementById('reg-password-error');
         const regAgeError = document.getElementById('reg-age-error');
         const regCountryError = document.getElementById('reg-country-error');
+
         const genderRadios = document.querySelectorAll('input[name="gender"]');
         const regGenderError = document.getElementById('reg-gender-error');
         const registerSubmitBtn = document.getElementById('register-submit');
+        const guestUsernameInput = document.getElementById('guest-username');
+
+        function enableFeature(buttonId, sectionId, setupFn) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+
+            button.addEventListener('click', () => {
+                section.classList.remove('hidden');
+                if (setupFn) setupFn();
+            }, { once: true });
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(user));
+        }
+
+        function saveRegisteredUser(user) {
+            const raw = localStorage.getItem(STORAGE_KEYS.users);
+            const users = raw ? JSON.parse(raw) : [];
+
+            // Replace if username already exists; otherwise append
+            const filtered = users.filter(u => u.username !== user.username);
+            filtered.push(user);
+
+            localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(filtered));
+        }
 
         function attachValidation(inputEl, regex, errorEl) {
             if (!inputEl || !errorEl) return;
@@ -328,6 +270,20 @@
                 regGenderError.classList.remove('hidden');
             }
         }
+
+        enableFeature("register-btn", "register-info", () => {
+            attachValidation(regUsernameInput, usernameRegex, regUsernameError);
+            attachValidation(regPasswordInput, passwordRegex, regPasswordError);
+            attachValidation(regAgeInput, ageRegex, regAgeError);
+            attachValidation(regCountryInput, countryRegex, regCountryError);
+            genderRadios.forEach(radio => radio.addEventListener('change', validateGender));
+        });
+
+        enableFeature("login-btn", "login-info", () => {
+            attachValidation(loginUsernameInput, usernameRegex, loginUsernameError);
+            attachValidation(loginPasswordInput, passwordRegex, loginPasswordError);
+        });
+        enableFeature("guest-btn", "guest-info");
 
         genderRadios.forEach(radio => {
             radio.addEventListener('change', validateGender);
@@ -362,10 +318,47 @@
             }
 
             if (usernameValid && passwordValid && ageValid && countryValid && genderValid) {
-                // TODO
-                console.log('Registration valid!');
+                const gender = Array.from(genderRadios).find(r => r.checked)?.value || null;
+
+                const user = {
+                    type: 'registered',
+                    username: regUsernameInput.value.trim(),
+                    password: regPasswordInput.value, // demo only; real app would hash
+                    age: parseInt(regAgeInput.value, 10),
+                    gender,
+                    country: regCountryInput.value.trim()
+                };
+
+                saveRegisteredUser(user);
+                saveCurrentUser(user);
+                
+                document.getElementById('register-info').classList.add('hidden');
             }
        });
+    }
+
+    if (guestUsernameInput) {
+        guestUsernameInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const name = guestUsernameInput.value.trim();
+
+                if (!usernameRegex.test(name)) {
+                    guestUsernameInput.classList.add('input-error');
+                    alert('Guest name must be 3–16 letters, numbers, or underscores.');
+                    return;
+                }
+
+                const user = {
+                    type: 'guest',
+                    username: name
+                };
+
+                saveCurrentUser(user);
+                console.log('Guest user saved:', user);
+
+                window.location.href = "game.html";
+            }
+        });
     }
 
             

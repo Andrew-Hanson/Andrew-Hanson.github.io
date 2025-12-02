@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Gamepage</title>
     <meta charset="UTF-8">
@@ -18,7 +17,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
-
         .box {
             width: 66%;
             right: 17%;
@@ -28,24 +26,20 @@
             padding: 10px;
             alignment-baseline: central;
         }
-
         #dealer {
             position: fixed;
             top: 1rem;
         }
-
         #player {
             position: fixed;
             bottom: 1rem;
         }
-
         #actions {
             width: 30px;
             bottom: 0;
             right: 10%;
             position: fixed;
         }
-
         button {
             background-color: white;
             border-radius: 18px;
@@ -54,7 +48,6 @@
             margin: 5px;
             cursor: pointer;
         }
-
         .card {
             border: solid 2px #000000;
             border-radius: 9px;
@@ -65,48 +58,24 @@
             padding: 3px 3px 3px 3px;
             margin: 5px;
         }
-
-        /*
-        .card {
-            border: 1px solid #000000;
-            background-color: rgb(163, 163, 197);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 12px;
-        }
-        */
         .value {
             font-size: 15pt;
             font-weight: bold;
             font-family: sans-serif;
         }
-
-        #startbet {}
-
         .hidden {
             display: none;
         }
-
         .centered {
             position: fixed;
             height: 25%;
             left: 40%;
             top: 50%;
         }
-
-        #player-select {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            margin: 0 auto;
-            max-width: 200px;
-        }
     </style>
 </head>
-
 <body>
     <main>
-
         <div id="start-menu">
             <h1>Blackjack</h1>
             <div id="user-bar">
@@ -130,7 +99,7 @@
             </div>
 
             <div id="bet">Bet: </div>
-            <div id="uname-display">User:</div>
+            <div id="uname-display">Player:</div>
             <div id="balance">Balance: </div>
 
             <div id="restart" class="centered hidden">
@@ -140,21 +109,15 @@
             </div>
         </div>
     </main>
-    <script>
-        // const newHeading = document.createElement("h1");
-        // newHeading.textContent = "Hello, World!";
-        // const newParagraph = document.createElement("p");
-        // newParagraph.textContent = "This is embedded HTML content" + playerObj.players.name;
-        // Math.floor(Math.random() * 4);
-        // Experience + Rounds Played
-    
+	<script>
         const STORAGE_KEYS = {
             currentUser: 'game.currentUser'
         };
         const rawUser = localStorage.getItem(STORAGE_KEYS.currentUser);
-
+    	let currentUser = null;
+        
         if (!rawUser) {
-            // No logged-in user – send them back to login page
+            // No logged in user, send back to login page
             window.location.href = "index.html";
         } else {
             currentUser = JSON.parse(rawUser);
@@ -162,10 +125,15 @@
 
         const unameHeader = document.getElementById("uname");
         const unameInGame = document.getElementById("uname-display");
-        const cardsuits = '["spades", "diamonds", "hearts", "clubs"]';
+
+        const cardsuits = ["clubs", "diamonds", "hearts", "spades"];
         const cardvalues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
-        // let starting_cash = 100000;
+        let deck = [];
+        let dealerCards = [];
+        let playerCards = [];
+        let hiddenDealerCard = null;   // DOM element of facedown card
+
         let starting = 0;
         let dealerscore = 0;
         let playerscore = 0;
@@ -174,79 +142,87 @@
         // Buttons shared across handlers
         let hit, stand, dd;
 
-        loadCurrentUser()
-
-        function enableFeature(buttonId, sectionId) {
-            const button = document.getElementById(buttonId);
-            const section = document.getElementById(sectionId);
-
-            button.addEventListener('click', () => {
-                section.classList.remove('hidden');
-            }, { once: true });
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
         function loadCurrentUser() {
             const raw = localStorage.getItem(STORAGE_KEYS.currentUser);
             if (!raw) return;
-
+			
             currentUser = JSON.parse(raw);
-
+			
             if (currentUser.balance && currentUser.balance > 0) {
-                balance = currentUser.balance;    
+                balance = currentUser.balance;
             } else {
+                // if no balance, initialize
                 currentUser.balance = balance;
             }
-
-            const unameEl = document.getElementById("uname");
-            if (unameEl) {
-                unameEl.innerText = `Player: ${currentUser.username}`;
-            }
-
+			
+            unameHeader.innerText = `Player: ${currentUser.username}`;
+            unameInGame.innerText = `Player: ${currentUser.username}`;
+			
             updateBalance();
-        }
+		}
 
         function updateBalance() {
             const bal = document.getElementById("balance");
             if (bal) {
                 bal.innerText = `Balance: ${balance}`;
-            }
+        	}
             currentUser.balance = balance;
             localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(currentUser));
         }
 
-        function endRound(message) {
-            alert(message);
-            document.getElementById("restart").classList.remove("hidden");
-
-            // Disable buttons so they don't stack
-            hit.removeEventListener("click", hitHandler);
-            dd.removeEventListener("click", doubleHandler);
-            stand.removeEventListener("click", standHandler);
+        function buildDeck() {
+            deck = [];
+            for (const suit of cardsuits) {
+                for (const rank of cardvalues) {
+                    let value;
+                    if (rank === "A") value = 11;
+                    else if (["J", "Q", "K"].includes(rank)) value = 10;
+                    else value = parseInt(rank, 10);
+					
+                	deck.push({ suit, rank, value });
+                }
+            }
         }
 
-        function computeHandValue(containerId) {
-            const cards = document.getElementById(containerId).querySelectorAll(".value");
+        function drawCard() {
+            if (deck.length === 0) buildDeck();
+            const idx = Math.floor(Math.random() * deck.length);
+            const [card] = deck.splice(idx, 1);
+            return card;
+        }
+
+        function renderCard(cardObj, containerId, faceDown = false) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+			
+            const img = document.createElement("img");
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+			
+            if (faceDown) {
+                img.src = "cards/back_of_card.png";
+                card.dataset.faceDown = "true";
+            } else {
+                img.src = `cards/${cardObj.rank.toLowerCase()}_of_${cardObj.suit}.png`;
+            }
+			
+            card.appendChild(img);
+            document.getElementById(containerId).appendChild(card);
+			
+            return card;
+    	}
+
+        function computeHandValue(cards) {
             let total = 0;
             let aces = 0;
-
-            cards.forEach(card => {
-                let v = card.innerText;
-
-                if (v === "A") {
-                    total += 11;
-                    aces++;
-                } else if (["J", "Q", "K"].includes(v)) {
-                    total += 10;
-                } else {
-                    total += parseInt(v, 10);
-                }
-            });
-
-            // Reduce Ace from 11 → 1 if over 21
+			
+            for (const c of cards) {
+                total += c.value;
+                if (c.rank === "A") aces++;
+            }
+			
+            // downgrade Aces from 11 → 1 while busting
             while (total > 21 && aces > 0) {
                 total -= 10;
                 aces--;
@@ -254,71 +230,80 @@
             return total;
         }
 
-        function addCard(person) {
-            let number = Math.floor(Math.random() * 13);
+        function addCard(person, show = true) {
+        	const c = drawCard();
+            
+            if (person === "player") {
+            	playerCards.push(c);
+            	renderCard(c, person);
+            } else if (show) {
+            	dealerCards.push(c);
+            	renderCard(c, "dealer");
+     	   } else {
+           		dealerCards.push(c);
+            	hiddenDealerCard = renderCard(c, "dealer", true);
+           }
+  	  }
 
-            let card = document.createElement("div");
-            let value = document.createElement("span");
+        function revealDealerHiddenCard() {
+        	let hasHiddenDealerCard = hiddenDealerCard !== null;
+            if (!hasHiddenDealerCard || !hiddenDealerCard) return;
+			
+            const card = dealerCards[0];
+            const img = hiddenDealerCard.querySelector("img");
+            if (img) {
+                img.src = `cards/${card.rank.toLowerCase()}_of_${card.suit}.png`;
+ 	       }
+    	}
 
-            card.classList.add("card");
-            value.classList.add("value");
-
-            value.innerText = cardvalues[number];
-            let num_value = value.innerText;
-
-            switch (num_value) {
-                case "A":
-                    num_value = 1;
-                    break;
-                case "J":
-                    num_value = 11;
-                    break;
-                case "Q":
-                    num_value = 12;
-                    break;
-                case "K":
-                    num_value = 13;
-                    break;
-                default:
-                    num_value = parseInt(num_value, 10);
-            }
-
-            card.appendChild(value);
-            document.getElementById(person).appendChild(card);
-            return num_value;
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        async function hitHandler() {
-            addCard("player");
+        function endRound(message) {
+            alert(message);
+            document.getElementById("restart").classList.remove("hidden");
+		
+            // Disable buttons so they don't stack
+            hit.removeEventListener("click", hitHandler);
+            dd.removeEventListener("click", doubleHandler);
+            stand.removeEventListener("click", standHandler);
+  		}
 
-            playerscore = computeHandValue("player");
+    	async function hitHandler() {
+        	addCard("player");
+			
+            playerscore = computeHandValue(playerCards);
             if (playerscore > 21) {
                 balance -= starting;
                 updateBalance();
                 await sleep(500);
-
-                endRound("BUST! You went over 21.");
-            }
-        }
-
+		
+            	endRound(`BUST! You went over 21 with ${playerscore}.`);
+        	}
+   		}
+        
         function doubleHandler() {
-            playerscore += addCard("player");
             starting = starting * 2;
-            document.getElementById("bet").innerText = "Bet: " + starting;
-        }
+            hitHandler();
+		}
 
         async function standHandler() {
-            playerscore = computeHandValue("player");
-            dealerscore = computeHandValue("dealer");
-
-            // Dealer keeps hitting while behind the player and not busted
-            while (dealerscore < playerscore && dealerscore <= 21) {
-                addCard("dealer");
-                dealerscore = computeHandValue("dealer");
+            revealDealerHiddenCard();
+            await sleep(500);
+			
+            playerscore = computeHandValue(playerCards);
+            dealerscore = computeHandValue(dealerCards);
+			
+        	// Dealer keeps hitting while behind the player and not busted
+        	while (dealerscore < playerscore && dealerscore <= 21) {
+            	addCard("dealer");
+                dealerscore = computeHandValue(dealerCards);
                 await sleep(500);
             }
+			
             let message;
-
+			
             if (dealerscore > 21) {
                 message = `Dealer busts with ${dealerscore}. You win!`;
                 balance += starting;
@@ -331,68 +316,92 @@
                 message = `You win ${playerscore} vs ${dealerscore}.`;
                 balance += starting;
             }
-            
+			
             updateBalance();
             await sleep(500);
             endRound(message);
-        }
+		}
 
-        function restart() {
-            document.getElementById("player").innerText = "";
-            document.getElementById("dealer").innerText = "";
-
+		function restart() {
+            document.getElementById("player").innerHTML = "";
+            document.getElementById("dealer").innerHTML = "";
+			
             document.getElementById("restart").classList.add("hidden");
             document.getElementById("game").classList.add("hidden");
-
+			
             // Show bet screen again; next round will start after next bet
             document.getElementById("startbet").classList.remove("hidden");
-            // clear previous bet
             document.getElementById("startvalue").value = "";
             betInput.focus();
-        }
+		}
+
+    // make restart available to inline onclick
+    window.restart = restart;
 
         function gameRun() {
+            // Clear previous cards
+            document.getElementById("dealer").innerHTML = "";
+            document.getElementById("player").innerHTML = "";        
+			
+            dealerCards = [];
+            playerCards = [];
+            hiddenDealerCard = null;
+            
+            buildDeck();
+			
             // Reset scores for this round
             dealerscore = 0;
             playerscore = 0;
-
-            dealerscore += addCard("dealer");
-            dealerscore += addCard("dealer");
-
-            playerscore += addCard("player");
-            playerscore += addCard("player");
-
+			
+            // --- initial deal:
+            // Dealer: 1st card facedown
+            addCard("dealer", false);
+			
+            // Dealer: 2nd card
+            addCard("dealer");
+			
+            // Player: two cards
+            addCard("player");
+            addCard("player");
+			
+			playerscore = computeHandValue(playerCards);
+        	dealerscore = computeHandValue(dealerCards);
+			
             // Initialize global button refs
             hit = document.getElementById('hit');
             stand = document.getElementById('stand');
             dd = document.getElementById("double");
-
+			
             hit.addEventListener("click", hitHandler);
             dd.addEventListener("click", doubleHandler);
             stand.addEventListener("click", standHandler);
         }
 
-        if (currentUser) {
-            unameHeader.textContent = `Player: ${currentUser.username}`;
-            unameInGame.textContent = `User: ${currentUser.username}`;
-        }
+		loadCurrentUser();
 
         const betInput = document.getElementById("startvalue");
         betInput.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 // Get the input as integer
                 let valueInt = parseInt(event.target.value, 10);
-
+				
                 if (isNaN(valueInt) || valueInt <= 0) {
                     alert("Please enter a valid positive number for your bet.");
                     return;
                 }
-
+				
                 // Save it
                 starting = valueInt;
                 document.getElementById("bet").innerText = "Bet: " + starting;
-
-                // Hide bet screen, show game, start round
+				
+                if (valueInt > balance) {
+                    alert("You cannot bet more than your current balance.");
+                    return;
+                }
+				
+                starting = valueInt;
+                document.getElementById("bet").innerText = "Bet: " + starting;
+				
                 document.getElementById("startbet").classList.add("hidden");
                 document.getElementById("game").classList.remove("hidden");
                 gameRun();
